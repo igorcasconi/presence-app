@@ -1,25 +1,23 @@
-import React, {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+"use client";
+
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, getAuth, User } from "firebase/auth";
 import { app } from "@/firebase/config";
-import { Loader } from "@/components";
 
 const auth = getAuth(app);
 
-export const AuthContext = createContext({});
-
-export const useAuthContext = () => useContext(AuthContext);
-
-interface AuthContextProps extends PropsWithChildren {
-  user: { name: string; accessToken?: string };
+interface AuthContextProps {
+  user: User | null;
+  loading: boolean;
 }
 
-export const AuthContextProvider = ({ children }: AuthContextProps) => {
+export const AuthContext = createContext<AuthContextProps | undefined>(
+  undefined
+);
+
+export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -38,8 +36,10 @@ export const AuthContextProvider = ({ children }: AuthContextProps) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user }}>
-      {loading ? <Loader /> : children}
+    <AuthContext.Provider value={{ user, loading }}>
+      {children}
     </AuthContext.Provider>
   );
 };
+
+export const useAuthContext = () => useContext(AuthContext);

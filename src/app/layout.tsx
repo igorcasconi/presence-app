@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthContextProvider } from "@/contexts/AuthContext";
 
 const inter = Montserrat({ subsets: ["latin"] });
 
@@ -20,8 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
-        <ToastContainer position="top-center" />
+        <AuthContextProvider>
+          {children}
+          <ToastContainer position="top-center" />
+        </AuthContextProvider>
       </body>
     </html>
   );

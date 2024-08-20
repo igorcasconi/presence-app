@@ -4,3 +4,8 @@ export type SignUpFormProps = {
   password: string;
   confirmPassword: string;
 };
+
+export type LoginFormProps = {
+  email: string;
+  password: string;
+};
