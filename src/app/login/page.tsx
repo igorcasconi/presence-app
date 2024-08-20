@@ -3,41 +3,46 @@ import React from "react";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import useRouter from "next/router";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 import { Input, Button } from "@/components";
-import { signUpUser, updateUserData } from "@/firebase/auth/signup";
+import { signIn } from "@/firebase/auth/signin";
 
-import { SignUpFormProps } from "@/shared/types/user";
-import { signUpSchema } from "@/schemas/user";
+import { loginSchema } from "@/schemas/user";
+import { LoginFormProps } from "@/shared/types/user";
 
 const SignUpView = () => {
   const router = useRouter();
-
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<SignUpFormProps>({
+  } = useForm<LoginFormProps>({
     defaultValues: {
-      name: "",
       email: "",
       password: "",
-      confirmPassword: "",
     },
-    resolver: zodResolver(signUpSchema),
+    resolver: zodResolver(loginSchema),
   });
 
-  const handleSignUpUser = async (values: SignUpFormProps) => {
-    const { error } = await signUpUser(values.email, values.password);
+  const handleSignInUser = async (values: LoginFormProps) => {
+    const { result, error } = await signIn(values.email, values.password);
 
     if (!!error) {
-      toast.error("Ocorreu um erro ao cadastrar o seu usuário!");
+      toast.error("Ocorreu um erro ao logar com seu usuário!");
+      return;
     }
 
-    await updateUserData(values.name);
-    return router.push("/login");
+    const token = await result?.user.getIdToken();
+
+    await fetch("api/login", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return router.push("/");
   };
 
   return (
@@ -50,21 +55,10 @@ const SignUpView = () => {
       />
 
       <h1 className="text-white text-center font-semibold mt-5 mb-10 text-[24px]">
-        Cadastre-se
+        Login
       </h1>
 
-      <form onSubmit={handleSubmit(handleSignUpUser)} className="w-full">
-        <div className="mb-5 w-full">
-          <Input
-            label="Nome"
-            placeholder="Nome"
-            register={register}
-            name="name"
-            error={!!errors?.name?.message}
-            message={errors.name?.message}
-          />
-        </div>
-
+      <form onSubmit={handleSubmit(handleSignInUser)} className="w-full">
         <div className="mb-5 w-full">
           <Input
             label="email"
@@ -88,20 +82,8 @@ const SignUpView = () => {
           />
         </div>
 
-        <div className="mb-10 w-full">
-          <Input
-            label="Confirme a senha"
-            placeholder="*******"
-            type="password"
-            register={register}
-            name="confirmPassword"
-            error={!!errors?.confirmPassword?.message}
-            message={errors.confirmPassword?.message}
-          />
-        </div>
-
         <Button
-          text="Cadastrar"
+          text="Entrar"
           type="submit"
           loading={isSubmitting}
           className="mb-10"
