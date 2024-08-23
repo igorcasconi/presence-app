@@ -3,7 +3,7 @@ import React from "react";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import useRouter from "next/router";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 import { Input, Button } from "@/components";
@@ -41,7 +41,7 @@ const SignUpView = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center md:max-w-[500px] m-auto">
+    <div className="w-full h-full flex flex-col items-center md:max-w-[500px] m-auto px-4">
       <Image
         alt="logo-domovimento"
         src="/logo-transparent.png"

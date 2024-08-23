@@ -2,7 +2,7 @@ import React from "react";
 
 const containerPropsDefault = "w-full h-auto";
 
-interface InputProps {
+export interface InputProps {
   value?: string;
   onChange?: (event: any) => void;
   label?: string;

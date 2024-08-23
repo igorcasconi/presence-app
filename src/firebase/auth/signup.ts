@@ -1,12 +1,13 @@
+import { getDatabase, ref, set } from "firebase/database";
 import { app } from "../config";
 import {
   createUserWithEmailAndPassword,
   getAuth,
-  updateCurrentUser,
   updateProfile,
 } from "firebase/auth";
 
 const auth = getAuth(app);
+const database = getDatabase(app);
 
 export const signUpUser = async (email: string, password: string) => {
   let result = null,
@@ -30,6 +31,14 @@ export const updateUserData = async (name: string) => {
   }
 
   try {
+    set(ref(database, "users/" + auth?.currentUser.uid), {
+      name: name,
+      isStudent: true,
+      isTeacher: false,
+      isAdmin: false,
+      isActive: true,
+    });
+
     result = updateProfile(auth?.currentUser, {
       displayName: name,
     });
