@@ -20,8 +20,6 @@
 body {
   color: rgb(var(--foreground-rgb));
   background-color: var(--primary);
-  padding-left: 16px;
-  padding-right: 16px;
 }
 
 @layer utilities {

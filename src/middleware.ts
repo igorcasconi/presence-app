@@ -10,11 +10,6 @@ import { firebaseConfig } from "@/firebase/config";
 const PUBLIC_PATHS = ["/sign-up", "/login"];
 
 export function middleware(request: NextRequest) {
-  const cookies = request.cookies;
-
-  console.log("Request URL:", request.url);
-  console.log("Cookies:", cookies);
-  console.log("middleware", firebaseConfig.apiKey);
   return authMiddleware(request, {
     loginPath: "/api/login",
     logoutPath: "/api/logout",
