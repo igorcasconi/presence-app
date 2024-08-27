@@ -8,6 +8,7 @@ interface ButtonProps {
   onClick?: () => void;
   type?: "submit" | "button";
   disabled?: boolean;
+  textStyle?: string;
 }
 
 const Button = ({
@@ -17,6 +18,7 @@ const Button = ({
   onClick,
   type = "button",
   disabled,
+  textStyle,
 }: ButtonProps) => {
   return (
     <button
@@ -28,7 +30,9 @@ const Button = ({
       {loading ? (
         <Loader />
       ) : (
-        <p className="text-white text-base font-semibold w-full">{text}</p>
+        <p className={`text-white text-base font-semibold w-full ${textStyle}`}>
+          {text}
+        </p>
       )}
     </button>
   );
