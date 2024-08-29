@@ -74,3 +74,25 @@ export const updateUser = async (uid: string, user: UserProps) => {
     console.log("error", error);
   }
 };
+
+export const getTeacherSelectList = async () => {
+  let modalitiesRef = ref(database, "users");
+  try {
+    // @ts-ignore
+    modalitiesRef = query(modalitiesRef, orderByKey());
+    const snapshot = await get(modalitiesRef);
+    if (snapshot.exists()) {
+      const data = snapshot.val() as { [key: string]: UserProps };
+      const arrayData = Object.keys(data).map((key) => ({
+        uid: key,
+        ...data[key],
+      }));
+      return arrayData.filter((user) => user.isTeacher);
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching modality list:", error);
+    return null;
+  }
+};

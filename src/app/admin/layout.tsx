@@ -22,11 +22,6 @@ export default function AdminLayout({
   };
 
   const handleClickMenu = () => {
-    const menu = document.getElementById("menu");
-    menu?.classList.toggle("translate-x-full");
-    menu?.classList.toggle("translate-x-0");
-    menu?.classList.toggle("opacity-0");
-    menu?.classList.toggle("opacity-100");
     setIsMenuOpen(!isMenuOpen);
   };
 
@@ -62,8 +57,8 @@ export default function AdminLayout({
           <MenuIcon />
         </button>
       </div>
-      <Menu handleClickMenu={handleClickMenu} />
-      <div className={`h-full ${isMenuOpen && `opacity-30 `}`}>{children}</div>
+      <Menu handleClickMenu={handleClickMenu} isOpen={isMenuOpen} />
+      <div className={`h-full ${isMenuOpen && `opacity-30`}`}>{children}</div>
     </div>
   );
 }

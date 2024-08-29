@@ -1,3 +1,6 @@
+"use client";
+
+import { useInputMask } from "@code-forge/react-input-mask";
 import React from "react";
 
 const containerPropsDefault = "w-full h-auto";
@@ -14,6 +17,9 @@ export interface InputProps {
   register?: any;
   error?: boolean;
   containerProps?: string;
+  readOnly?: boolean;
+  onClick?: () => void;
+  mask?: string;
 }
 
 const Input = ({
@@ -28,7 +34,14 @@ const Input = ({
   message,
   register,
   error,
+  readOnly = false,
+  onClick,
+  mask,
 }: InputProps) => {
+  const { getInputProps } = useInputMask({
+    mask: mask,
+  });
+
   return (
     <div className={containerProps}>
       <label
@@ -44,13 +57,16 @@ const Input = ({
         id={name}
         placeholder={placeholder}
         value={value}
+        readOnly={readOnly}
         onChange={onChange}
+        onClick={onClick}
         {...(!!register && { ...register(name) })}
         className={`block w-full rounded-lg border bg-primary p-3 text-white  focus:outline-transparent focus:outline-0 ${inputStyle} ${
           !!error
             ? `border-negative-100 focus:border-negative-100`
             : `border-gray-50 focus:border-secondary`
         }`}
+        {...getInputProps()}
       />
       {!!message && (
         <p
