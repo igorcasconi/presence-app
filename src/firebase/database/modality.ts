@@ -59,7 +59,7 @@ export const getModalityList = async (
       return null;
     }
   } catch (error) {
-    console.error("Error fetching user list:", error);
+    console.error("Error fetching modality list:", error);
     return null;
   }
 };
@@ -77,7 +77,29 @@ export const getModalityData = async (modalityId: string) => {
       console.log("No data available");
     }
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error fetching modality:", error);
+    return null;
+  }
+};
+
+export const getModalitySelectList = async () => {
+  let modalitiesRef = ref(database, "modalities");
+  try {
+    // @ts-ignore
+    modalitiesRef = query(modalitiesRef, orderByKey());
+    const snapshot = await get(modalitiesRef);
+    if (snapshot.exists()) {
+      const data = snapshot.val() as { [key: string]: ModalityProps };
+      const arrayData = Object.keys(data).map((key) => ({
+        uid: key,
+        ...data[key],
+      }));
+      return arrayData;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching modality list:", error);
     return null;
   }
 };

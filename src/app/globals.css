@@ -31,3 +31,19 @@ body {
 .menu-transition {
   transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: "";
+  width: 100%;
+}
+
+input[type="date"] {
+  color-scheme: dark;
+}
+
+input[type="time"] {
+  color-scheme: dark;
+}
