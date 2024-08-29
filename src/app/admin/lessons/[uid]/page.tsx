@@ -63,11 +63,11 @@ const LessonDetail = () => {
       ) : (
         <>
           <div className="flex w-full justify-end">
-            <Button text="Editar" className="h-8 w-24" textStyle="text-xs" />
             <Button
               text="Excluir"
-              className="h-8 w-24 bg-red-500 ml-2"
+              className="h-8 max-w-24 bg-red-600 ml-2"
               textStyle="text-xs"
+              disabled
             />
           </div>
           <div className="w-full">

@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { v4 as uuidv4 } from "uuid";
 
 import { Input, Button } from "@/components";
 import {
@@ -21,7 +20,6 @@ const EditModality = () => {
   const [modalityDetailData, setModalityDetailData] = useState<
     ModalityProps | null | undefined
   >(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const {
     register,
@@ -56,8 +54,6 @@ const EditModality = () => {
       reset({ name: modalityDatabase?.name });
     } catch (error) {
       console.log(error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
