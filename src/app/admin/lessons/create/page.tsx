@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { Input, Button, Select, Switch } from "@/components";
 import WeekDays from "@/components/WeekDays/WeekDays";
-import { createUpdateLesson } from "@/firebase/database/lesson";
+import { createLesson } from "@/firebase/database/lesson";
 import { getModalitySelectList } from "@/firebase/database/modality";
 import { getTeacherSelectList } from "@/firebase/database/user";
 
@@ -50,7 +50,7 @@ const CreateLesson = () => {
       ...(!!values.weekDays?.length && { weekDays: values.weekDays }),
       ...(!!values.date && { date: values.date }),
     } as LessonFormProps;
-    const { error } = await createUpdateLesson(uid, payload);
+    const { error } = await createLesson(uid, payload);
 
     if (!!error) {
       toast.error("Ocorreu um erro ao cadastrar a nova aula!");
