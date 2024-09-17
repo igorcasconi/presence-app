@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { format } from "date-fns";
 
 import { Button, Loader } from "@/components";
-import { getLessonList } from "@/firebase/database/lesson";
+import { deleteOldAttendance, getLessonList } from "@/firebase/database/lesson";
 
 import { LessonProps } from "@/shared/types/lesson";
 import { getModalitySelectList } from "@/firebase/database/modality";
@@ -86,6 +86,7 @@ const Lesson = () => {
 
   useEffect(() => {
     loadClassList();
+    deleteOldAttendance();
     //eslint-disable-next-line
   }, []);
 

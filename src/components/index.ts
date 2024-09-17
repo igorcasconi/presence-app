@@ -5,3 +5,4 @@ export * from "./Switch";
 export * from "./icons";
 export * from "./Menu";
 export * from "./Select";
+export * from "./Modal";

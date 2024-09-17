@@ -25,7 +25,8 @@ const Button = ({
       type={type}
       onClick={onClick}
       disabled={loading || disabled}
-      className={`flex justify-center items-center rounded-lg w-full h-12 px-6 bg-secondary ring-0 ring-[rgba(23, 24, 28, 0.08)] ${className}`}
+      className={`flex justify-center items-center rounded-lg w-full h-12 px-6 bg-secondary ring-0 ring-[rgba(23, 24, 28, 0.08)] ${className}
+      ${disabled && `opacity-40`}`}
     >
       {loading ? (
         <Loader />

@@ -1,22 +1,34 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
-import { Button, Loader } from "@/components";
-import { getLessonData } from "@/firebase/database/lesson";
+import { Button, Loader, Modal } from "@/components";
+import {
+  createAttendanceList,
+  deleteAttendanceWithLessonId,
+  deleteLesson,
+  getLessonData,
+  updateButtonGenerateLesson,
+} from "@/firebase/database/lesson";
 
 import { LessonProps } from "@/shared/types/lesson";
 import { getModalityData } from "@/firebase/database/modality";
 import { getUserData } from "@/firebase/database/user";
 import { WEEK_DAYS_PT } from "@/helpers/date";
+import { toast } from "react-toastify";
+import { isFriday } from "date-fns";
 
 const LessonDetail = () => {
   const [lessonDetailData, setLessonDetailData] = useState<
     LessonProps | null | undefined
   >(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingGenerate, setIsLoadingGenerate] = useState(false);
+  const [isEnabledGenerateButton, setIsEnabledGenerateButton] = useState(true);
   const params = useParams<{ uid: string }>();
+  const router = useRouter();
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const loadUserData = async () => {
     try {
@@ -36,9 +48,9 @@ const LessonDetail = () => {
 
       const lessonObject = {
         ...lessonData,
-        teacher: userDetailData?.name,
-        modality: modalityData?.name,
-        weekDays: translateWeekDays,
+        teacherName: userDetailData?.name,
+        modalityName: modalityData?.name,
+        translateWeekDays: translateWeekDays,
       } as LessonProps;
 
       setLessonDetailData(lessonObject);
@@ -49,8 +61,50 @@ const LessonDetail = () => {
     }
   };
 
+  const handleGenerateLessonDays = async () => {
+    if (!lessonDetailData) return;
+
+    setIsLoadingGenerate(true);
+
+    const lessonObject = lessonDetailData;
+    lessonObject.uid = params.uid;
+
+    try {
+      await createAttendanceList(lessonObject);
+      await updateButtonGenerateLesson(params.uid, true);
+      setIsEnabledGenerateButton(false);
+      toast.success("Novas aulas geradas com sucesso!");
+    } catch (error) {
+      console.log(error);
+      toast.error("Ocorreu um erro ao gerar novas aulas!");
+    } finally {
+      setIsLoadingGenerate(false);
+    }
+  };
+
+  const handleEnableGenerateButton = async () => {
+    if (isFriday(new Date())) {
+      await updateButtonGenerateLesson(params.uid, false);
+      setIsEnabledGenerateButton(true);
+    } else {
+      setIsEnabledGenerateButton(lessonDetailData?.hasGenerateLessons!);
+    }
+  };
+
+  const handleDeleteLesson = async () => {
+    try {
+      await deleteLesson(params.uid);
+      await deleteAttendanceWithLessonId(params.uid);
+      toast.success("Aula excluída com sucesso!");
+      router.push("/admin/lessons");
+    } catch (error) {
+      toast.error("Ocorreu um erro ao deletar aula!");
+    }
+  };
+
   useEffect(() => {
     loadUserData();
+    handleEnableGenerateButton();
     //eslint-disable-next-line
   }, []);
 
@@ -62,12 +116,23 @@ const LessonDetail = () => {
         </div>
       ) : (
         <>
+          {isModalVisible && (
+            <Modal
+              title="Excluir aula?"
+              message="Realmente deseja excluir esta aula? Ao confirmar as aulas e presenças dessa semana serão apagadas!"
+              confirmButtonLabel="Excluir"
+              cancelButtonLabel="Cancelar"
+              onConfirmButton={handleDeleteLesson}
+              onCancelButton={() => setModalVisible(false)}
+              onCloseModal={() => setModalVisible(false)}
+            />
+          )}
           <div className="flex w-full justify-end">
             <Button
               text="Excluir"
-              className="h-8 max-w-24 bg-red-600 ml-2"
+              className="!bg-red-500 h-8 max-w-24 ml-2"
               textStyle="text-xs"
-              disabled
+              onClick={() => setModalVisible(true)}
             />
           </div>
           <div className="w-full">
@@ -75,7 +140,7 @@ const LessonDetail = () => {
               <h2 className="text-gray-300 text-md">Aula</h2>
               <div className="mb-4">
                 <h3 className="text-white text-xl">
-                  {lessonDetailData?.modality}
+                  {lessonDetailData?.modalityName}
                 </h3>
               </div>
             </div>
@@ -85,7 +150,9 @@ const LessonDetail = () => {
             <h2 className="text-gray-300 text-md">Professor</h2>
           </div>
           <div className="w-full mb-4">
-            <h3 className="text-white text-xl">{lessonDetailData?.teacher}</h3>
+            <h3 className="text-white text-xl">
+              {lessonDetailData?.teacherName}
+            </h3>
           </div>
 
           <div className="w-full mb-[-2px] justify-center">
@@ -95,14 +162,31 @@ const LessonDetail = () => {
             <h3 className="text-white text-xl">{lessonDetailData?.time}</h3>
           </div>
 
-          <div className="w-full mb-[-2px] justify-center">
-            <h2 className="text-gray-300 text-md">Dias da semana</h2>
-          </div>
-          <div className="w-full mb-4">
-            <h3 className="text-white text-xl">
-              {lessonDetailData?.weekDays?.join(", ")}
-            </h3>
-          </div>
+          {!!lessonDetailData?.weekDays?.length && (
+            <>
+              <div className="w-full mb-[-2px] justify-center">
+                <h2 className="text-gray-300 text-md">Dias da semana</h2>
+              </div>
+              <div className="w-full mb-4">
+                <h3 className="text-white text-xl">
+                  {lessonDetailData?.translateWeekDays?.join(", ")}
+                </h3>
+              </div>
+            </>
+          )}
+
+          {!!lessonDetailData?.weekDays?.length && (
+            <div className="flex w-full justify-end">
+              <Button
+                text="Gerar as próximas aulas"
+                className="h-10"
+                textStyle="text-xs"
+                onClick={handleGenerateLessonDays}
+                loading={isLoadingGenerate}
+                disabled={!isEnabledGenerateButton}
+              />
+            </div>
+          )}
         </>
       )}
     </div>
