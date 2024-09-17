@@ -6,4 +6,5 @@ export type AttendanceProps = {
   time: string;
   date: string;
   attendanceList: Array<string>;
+  lessonId: string;
 };

@@ -136,6 +136,7 @@ export const createAttendanceList = async (lesson: LessonProps) => {
           teacher: lesson.teacher,
           time: lesson.time,
           date: date,
+          lessonId: lesson.uid,
         });
       });
     }
@@ -160,6 +161,28 @@ export const setUserPresence = async (uid: string, lesson: LessonProps) => {
   }
 
   return { error };
+};
+
+export const deleteAttendanceWithLessonId = async (lessonId: string) => {
+  let attendancesRef = ref(database, "attendance");
+  try {
+    // @ts-ignore
+    attendancesRef = query(attendancesRef, orderByKey());
+    const snapshot = await get(attendancesRef);
+    if (snapshot.exists()) {
+      const data = snapshot.val() as { [key: string]: AttendanceProps };
+      Object.keys(data).forEach((key) => {
+        if (data[key].lessonId === lessonId) {
+          remove(ref(database, `attendance/${key}`));
+        }
+      });
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error delete attendance with by lesson id:", error);
+    return null;
+  }
 };
 
 export const deleteOldAttendance = async () => {

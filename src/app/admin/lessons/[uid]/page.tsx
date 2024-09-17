@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Button, Loader, Modal } from "@/components";
 import {
   createAttendanceList,
+  deleteAttendanceWithLessonId,
   deleteLesson,
   getLessonData,
   updateButtonGenerateLesson,
@@ -66,13 +67,10 @@ const LessonDetail = () => {
     setIsLoadingGenerate(true);
 
     const lessonObject = lessonDetailData;
-
-    delete lessonObject.teacherName;
-    delete lessonObject.modalityName;
-    delete lessonObject.translateWeekDays;
+    lessonObject.uid = params.uid;
 
     try {
-      await createAttendanceList(lessonDetailData);
+      await createAttendanceList(lessonObject);
       await updateButtonGenerateLesson(params.uid, true);
       setIsEnabledGenerateButton(false);
       toast.success("Novas aulas geradas com sucesso!");
@@ -96,6 +94,7 @@ const LessonDetail = () => {
   const handleDeleteLesson = async () => {
     try {
       await deleteLesson(params.uid);
+      await deleteAttendanceWithLessonId(params.uid);
       toast.success("Aula excluída com sucesso!");
       router.push("/admin/lessons");
     } catch (error) {
