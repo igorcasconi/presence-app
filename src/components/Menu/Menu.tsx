@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { CloseIcon } from "../icons";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface MenuProps {
   handleClickMenu: () => void;
@@ -9,6 +10,7 @@ interface MenuProps {
 }
 
 const Menu = ({ handleClickMenu, isOpen }: MenuProps) => {
+  const { userData } = useAuth();
   return (
     <div
       id="menu"
@@ -26,24 +28,30 @@ const Menu = ({ handleClickMenu, isOpen }: MenuProps) => {
       </div>
 
       <div className="mt-2 px-4 opacity-100">
-        <p className="text-gray-500 font-medium text-md">Menu Professor</p>
+        <ul>
+          <li className="mt-2 mb-4 text-md">
+            <a href="/">Aulas da semana</a>
+          </li>
+        </ul>
+        {(userData?.isAdmin || userData?.isTeacher) && (
+          <>
+            <p className="text-gray-500 font-medium text-md">Menu Professor</p>
 
-        <div className="flex flex-col h-full mt-4">
-          <ul>
-            <li className="mt-2 text-md">
-              <a href="/">Lista de presença</a>
-            </li>
-            <li className="mt-2 text-md">
-              <a href="/admin/lessons">Aulas</a>
-            </li>
-            <li className="mt-2 text-md">
-              <a href="/admin/users">Alunos/Usuários</a>
-            </li>
-            <li className="mt-2 text-md">
-              <a href="/admin/modalities">Modalidades</a>
-            </li>
-          </ul>
-        </div>
+            <div className="flex flex-col h-full">
+              <ul>
+                <li className="mt-2 text-md">
+                  <a href="/admin/lessons">Aulas</a>
+                </li>
+                <li className="mt-2 text-md">
+                  <a href="/admin/users">Alunos/Usuários</a>
+                </li>
+                <li className="mt-2 text-md">
+                  <a href="/admin/modalities">Modalidades</a>
+                </li>
+              </ul>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

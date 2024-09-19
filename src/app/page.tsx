@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { serverConfig } from "../../config";
 import { firebaseConfig } from "@/firebase/config";
+import { Attendance } from "@/components";
 
 const Home = async () => {
   const tokens = await getTokens(cookies(), {
@@ -17,11 +18,8 @@ const Home = async () => {
   }
 
   return (
-    <div className="w-full h-full">
-      <p>
-        Only <strong>{tokens?.decodedToken.email}</strong> holds the magic key
-        to this kingdom!
-      </p>
+    <div className="w-full h-full p-4">
+      <Attendance />
     </div>
   );
 };

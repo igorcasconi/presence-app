@@ -12,6 +12,7 @@ export const lessonSchema = z
     uid: z.string().optional(),
     date: z.string().optional(),
     isSingleLesson: z.boolean(),
+    title: z.string().optional(),
   })
   .refine(
     (data) => {
@@ -24,6 +25,19 @@ export const lessonSchema = z
     {
       message: "Campo Data é obrigatório",
       path: ["date"],
+    }
+  )
+  .refine(
+    (data) => {
+      if (data?.isSingleLesson && !data.title) {
+        return false;
+      }
+
+      return true;
+    },
+    {
+      message: "Campo Título é obrigatório",
+      path: ["title"],
     }
   )
   .refine(

@@ -9,7 +9,12 @@ import {
   query,
   remove,
 } from "firebase/database";
-import { differenceInWeeks, nextSunday as getNextSunday } from "date-fns";
+import {
+  differenceInWeeks,
+  nextSunday as getNextSunday,
+  isPast,
+  isWithinInterval,
+} from "date-fns";
 import { v4 as uuidv4 } from "uuid";
 
 import { app } from "../config";
@@ -32,7 +37,23 @@ export const createLesson = async (uid: string, lesson: LessonFormProps) => {
       hasGenerateLesson: false,
       ...(!!lesson?.weekDays?.length && { weekDays: lesson.weekDays }),
       ...(!!lesson?.date && { date: lesson.date }),
+      ...(!!lesson?.title && { title: lesson.title }),
     });
+
+    if (lesson.isSingleLesson) {
+      const uidAttendance = uuidv4();
+      set(ref(database, "attendance/" + uidAttendance), {
+        isActive: true,
+        createdAt: new Date(),
+        modality: lesson.modality,
+        teacher: lesson.teacher,
+        time: lesson.time,
+        date: lesson.date,
+        lessonId: uid,
+        isSingleLesson: true,
+        title: lesson.title,
+      });
+    }
   } catch (err) {
     console.log("error", err);
     error = err;
@@ -131,7 +152,7 @@ export const createAttendanceList = async (lesson: LessonProps) => {
         const date = getDate(day, dateNextSunday);
         set(ref(database, "attendance/" + uid), {
           isActive: true,
-          createAt: new Date(),
+          createdAt: new Date(),
           modality: lesson.modality,
           teacher: lesson.teacher,
           time: lesson.time,
@@ -211,5 +232,62 @@ export const deleteOldAttendance = async () => {
   } catch (error) {
     console.error("Error delete old attendance:", error);
     return null;
+  }
+};
+
+export const getAttendanceWeekList = async (
+  startDayWeek: Date,
+  endDayWeek: Date
+) => {
+  let attendancesRef = ref(database, "attendance");
+
+  try {
+    // @ts-ignore
+    attendancesRef = query(attendancesRef, orderByKey());
+    const snapshot = await get(attendancesRef);
+    if (snapshot.exists()) {
+      const data = snapshot.val() as { [key: string]: AttendanceProps };
+      const filteredData = Object.keys(data)
+        .map((key) => {
+          const dateIsWithinInterval = isWithinInterval(
+            new Date(data[key].date),
+            {
+              start: startDayWeek,
+              end: endDayWeek,
+            }
+          );
+
+          if (dateIsWithinInterval && !data[key].isSingleLesson)
+            return data[key];
+        })
+        .filter((day) => !!day);
+
+      return filteredData;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getSingleLessons = async () => {
+  let attendancesRef = ref(database, "attendance");
+
+  try {
+    // @ts-ignore
+    attendancesRef = query(attendancesRef, orderByKey());
+    const snapshot = await get(attendancesRef);
+    if (snapshot.exists()) {
+      const data = snapshot.val() as { [key: string]: AttendanceProps };
+      const filteredData = Object.keys(data)
+        .map((key) => {
+          if (!isPast(data[key].date) && data[key].isSingleLesson)
+            return data[key];
+        })
+        .filter((day) => !!day);
+
+      return filteredData;
+    }
+  } catch (error) {
+    console.log(error);
   }
 };

@@ -8,6 +8,7 @@ export type LessonFormProps = {
   weekDays?: string[];
   date?: string;
   hasGenerateLesson?: boolean;
+  title?: string;
 };
 
 export type LessonProps = {
@@ -17,14 +18,19 @@ export type LessonProps = {
   translateWeekDays?: string[];
   modality?: string;
   teacher?: string;
-  teacherName?: string;
-  modalityName?: string;
   uid?: string;
   date?: string;
   hasGenerateLessons?: boolean;
-};
+  createdAt?: Date;
+  title?: string;
+} & NamesProps;
 
 export type OptionProp = {
   id: string;
   label: string;
+};
+
+export type NamesProps = {
+  teacherName?: string;
+  modalityName?: string;
 };

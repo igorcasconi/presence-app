@@ -47,8 +47,10 @@ const CreateLesson = () => {
       modality: values.modality,
       isActive: true,
       teacher: values.teacher,
+      isSingleLesson: values.isSingleLesson,
       ...(!!values.weekDays?.length && { weekDays: values.weekDays }),
-      ...(!!values.date && { date: values.date }),
+      ...(!!values.date && { date: `${values.date}T00:00:00` }),
+      ...(!!values.title && { title: values.title }),
     } as LessonFormProps;
     const { error } = await createLesson(uid, payload);
 
@@ -56,6 +58,8 @@ const CreateLesson = () => {
       toast.error("Ocorreu um erro ao cadastrar a nova aula!");
       return;
     }
+
+    toast.success("Aula criada com sucesso!");
 
     return router.push("/admin/lessons");
   };
@@ -119,6 +123,19 @@ const CreateLesson = () => {
           />
           <p className="text-gray-500 text-md ml-2">Aula avulsa</p>
         </div>
+        {isSingleLesson && (
+          <div className="mb-5 w-full">
+            <Input
+              label="Título da aula"
+              placeholder="Ex.: Aulão"
+              register={register}
+              name="title"
+              error={!!errors?.title?.message}
+              message={errors.title?.message}
+              type="title"
+            />
+          </div>
+        )}
         <div className="mb-5 w-full">
           <Input
             label="Horário"

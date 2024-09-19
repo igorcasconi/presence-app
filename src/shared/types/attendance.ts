@@ -1,3 +1,5 @@
+import { NamesProps } from "./lesson";
+
 export type AttendanceProps = {
   isActive: boolean;
   createAt: string;
@@ -7,4 +9,6 @@ export type AttendanceProps = {
   date: string;
   attendanceList: Array<string>;
   lessonId: string;
-};
+  isSingleLesson?: boolean;
+  title?: string;
+} & NamesProps;
