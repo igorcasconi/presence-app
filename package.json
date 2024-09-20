@@ -9,18 +9,30 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@code-forge/react-input-mask": "^1.0.7",
+    "@hookform/resolvers": "^3.9.0",
+    "date-fns": "^3.6.0",
+    "firebase": "^10.12.3",
+    "next": "^14.2.12",
+    "next-firebase-auth-edge": "^1.5.3",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.4"
+    "react-hook-form": "^7.52.1",
+    "react-toastify": "^10.0.5",
+    "uuid": "^10.0.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@types/next": "^9.0.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^10.0.0",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.4",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.4"
-  }
+    "typescript": "^5"
+  },
+  "packageManager": "yarn@4.3.0+sha512.1606bef7c84bc7d83b8576063de2fd08f7d69f9939015bed800f9585a002390268ecc777e9feeba7e26e9556aef6beaad4806968db2182ab5dd3e955ab3b9a0b"
 }
