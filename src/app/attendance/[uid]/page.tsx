@@ -196,16 +196,20 @@ const AttendanceDetails = () => {
               />
             )}
 
-            <Button
-              text={
-                userAlreadyPresent ? "Cancelar presença" : "Confirmar presença"
-              }
-              className={`${
-                userAlreadyPresent ? "!bg-red-500" : "!bg-green-600"
-              } h-8 max-w-[200px]`}
-              textStyle="text-xs"
-              onClick={handleSetUserPresence}
-            />
+            {userData?.isActive && userData?.isStudent && (
+              <Button
+                text={
+                  userAlreadyPresent
+                    ? "Cancelar presença"
+                    : "Confirmar presença"
+                }
+                className={`${
+                  userAlreadyPresent ? "!bg-red-500" : "!bg-green-600"
+                } h-8 max-w-[200px]`}
+                textStyle="text-xs"
+                onClick={handleSetUserPresence}
+              />
+            )}
           </div>
 
           <div className="w-full">

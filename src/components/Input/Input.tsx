@@ -1,9 +1,10 @@
 "use client";
 
 import { useInputMask } from "@code-forge/react-input-mask";
-import React from "react";
+import React, { useState } from "react";
+import { EyeHideIcon, EyeIcon } from "../icons";
 
-const containerPropsDefault = "w-full h-auto";
+const containerPropsDefault = "w-full h-auto relative";
 
 export interface InputProps {
   value?: string;
@@ -38,9 +39,14 @@ const Input = ({
   onClick,
   mask,
 }: InputProps) => {
+  const [inputType, setInputType] = useState(type);
   const { getInputProps } = useInputMask({
     mask: mask,
   });
+
+  const handleInputTypePassword = () => {
+    setInputType(inputType === "password" ? "text" : "password");
+  };
 
   return (
     <div className={containerProps}>
@@ -52,7 +58,7 @@ const Input = ({
         {label}
       </label>
       <input
-        type={type}
+        type={inputType}
         name={name}
         id={name}
         placeholder={placeholder}
@@ -68,6 +74,15 @@ const Input = ({
         }`}
         {...getInputProps()}
       />
+      {type === "password" && (
+        <button
+          className="absolute top-[50%] right-4"
+          type="button"
+          onClick={handleInputTypePassword}
+        >
+          {inputType === "text" ? <EyeIcon /> : <EyeHideIcon />}
+        </button>
+      )}
       {!!message && (
         <p
           className={`mt-1 w-full text-base font-normal leading-4 ${
