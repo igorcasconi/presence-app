@@ -6,9 +6,15 @@ import { ArrowDownIcon } from "../icons";
 interface AccordionProps extends PropsWithChildren {
   title: string;
   startOpen?: boolean;
+  emptyText?: string;
 }
 
-const Accordion = ({ title, children, startOpen = false }: AccordionProps) => {
+const Accordion = ({
+  title,
+  children,
+  startOpen = false,
+  emptyText = "Não há aulas para esse dia",
+}: AccordionProps) => {
   const [openAccordion, setOpenAccordion] = useState(startOpen);
   return (
     <div className="max-w-3xl mx-auto mt-4 space-y-4 md:mt-16">
@@ -33,9 +39,7 @@ const Accordion = ({ title, children, startOpen = false }: AccordionProps) => {
             {!!Children.toArray(children).length ? (
               children
             ) : (
-              <p className="text-sm text-white text-center">
-                Não há aulas para esse dia!
-              </p>
+              <p className="text-sm text-white text-center">{emptyText}</p>
             )}
           </div>
         )}

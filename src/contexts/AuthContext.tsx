@@ -28,7 +28,7 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const getUserDatabase = async (uid: string) => {
       const userDatabase = await getUserData(uid);
-      setUserData(userDatabase);
+      setUserData({ ...userDatabase!, uid });
     };
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {

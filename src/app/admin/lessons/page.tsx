@@ -5,11 +5,12 @@ import { useEffect, useState } from "react";
 import { format } from "date-fns";
 
 import { Button, Loader } from "@/components";
-import { deleteOldAttendance, getLessonList } from "@/firebase/database/lesson";
+import { getLessonList } from "@/firebase/database/lesson";
 
 import { LessonProps } from "@/shared/types/lesson";
 import { getModalitySelectList } from "@/firebase/database/modality";
 import { getTeacherSelectList } from "@/firebase/database/user";
+import { deleteOldAttendance } from "@/firebase/database/attendance";
 
 const ITEMS_PER_PAGE = 10;
 

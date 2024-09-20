@@ -45,6 +45,10 @@ const SignUpView = () => {
     return router.push("/");
   };
 
+  const handleRouteSignUp = () => {
+    router.push("/sign-up");
+  };
+
   return (
     <div className="w-full h-full flex flex-col items-center md:max-w-[500px] m-auto px-4">
       <Image
@@ -89,6 +93,16 @@ const SignUpView = () => {
           className="mb-10"
         />
       </form>
+
+      <div className="text-center mt-4 text-white w-[232px]">
+        <p>Não possui um cadastro?</p>
+        <Button
+          text="Crie uma conta agora"
+          className="h-8"
+          textStyle="text-sm"
+          onClick={handleRouteSignUp}
+        />
+      </div>
     </div>
   );
 };

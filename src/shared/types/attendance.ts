@@ -11,4 +11,5 @@ export type AttendanceProps = {
   lessonId: string;
   isSingleLesson?: boolean;
   title?: string;
+  uid?: string;
 } & NamesProps;
