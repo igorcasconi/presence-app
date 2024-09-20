@@ -9,3 +9,4 @@ export * from "./Modal";
 export * from "./Accordion";
 export * from "./Attendance";
 export * from "./Card";
+export * from "./Header";

@@ -5,12 +5,14 @@ import { useParams, useRouter } from "next/navigation";
 
 import { Button, Loader, Modal } from "@/components";
 import {
-  createAttendanceList,
-  deleteAttendanceWithLessonId,
   deleteLesson,
   getLessonData,
   updateButtonGenerateLesson,
 } from "@/firebase/database/lesson";
+import {
+  createAttendanceList,
+  deleteAttendanceWithLessonId,
+} from "@/firebase/database/attendance";
 
 import { LessonProps } from "@/shared/types/lesson";
 import { getModalityData } from "@/firebase/database/modality";

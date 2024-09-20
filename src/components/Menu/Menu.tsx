@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { CloseIcon } from "../icons";
 import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "../Button";
+import { logout } from "@/firebase/auth/signin";
 
 interface MenuProps {
   handleClickMenu: () => void;
@@ -37,7 +39,7 @@ const Menu = ({ handleClickMenu, isOpen }: MenuProps) => {
           <>
             <p className="text-gray-500 font-medium text-md">Menu Professor</p>
 
-            <div className="flex flex-col h-full">
+            <div className="flex flex-col">
               <ul>
                 <li className="mt-2 text-md">
                   <a href="/admin/lessons">Aulas</a>
@@ -52,6 +54,15 @@ const Menu = ({ handleClickMenu, isOpen }: MenuProps) => {
             </div>
           </>
         )}
+        <div className="opacity-100 mt-8">
+          <p className="text-gray-500 font-medium text-md">Usuário</p>
+          <Button
+            text="Sair"
+            className="!bg-red-500 h-8"
+            textStyle="text-sm"
+            onClick={logout}
+          />
+        </div>
       </div>
     </div>
   );

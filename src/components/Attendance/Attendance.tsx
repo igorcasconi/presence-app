@@ -14,10 +14,11 @@ import { useEffect, useState } from "react";
 import {
   getAttendanceWeekList,
   getSingleLessons,
-} from "@/firebase/database/lesson";
+} from "@/firebase/database/attendance";
 import { Card } from "../Card";
 import { getModalityData } from "@/firebase/database/modality";
 import { getUserData } from "@/firebase/database/user";
+import { useRouter } from "next/navigation";
 
 const initialDayWeek = startOfWeek(new Date(), { weekStartsOn: 1 });
 const endDayWeek = addDays(initialDayWeek, 6);
@@ -38,6 +39,7 @@ const Attendance = () => {
   const [singleLessonAttendanceData, setSingleLessonAttendancData] = useState<
     AttendanceProps[] | undefined
   >(undefined);
+  const router = useRouter();
 
   const getAttendanceByDate = (day: Date) => {
     const days = attendanceData?.filter((weekDay) =>
@@ -94,6 +96,10 @@ const Attendance = () => {
     }
   };
 
+  const handleOpenDetails = (attendanceId?: string) => {
+    router.push(`/attendance/${attendanceId}`);
+  };
+
   useEffect(() => {
     handleGetAttendanceList();
     handleGetSingleLessons();
@@ -103,7 +109,11 @@ const Attendance = () => {
     <>
       <Accordion title="Aulas avulsas" startOpen={true}>
         {singleLessonAttendanceData?.map((attendance, index) => (
-          <Card key={index} data={attendance} />
+          <Card
+            key={index}
+            data={attendance}
+            onClick={() => handleOpenDetails(attendance?.uid)}
+          />
         ))}
       </Accordion>
       <Accordion
@@ -111,7 +121,11 @@ const Attendance = () => {
         startOpen={isOpenAccordionWeekDay(week[0])}
       >
         {getAttendanceByDate(week[0])?.map((attendance, index) => (
-          <Card key={index} data={attendance} />
+          <Card
+            key={index}
+            data={attendance}
+            onClick={() => handleOpenDetails(attendance?.uid)}
+          />
         ))}
       </Accordion>
       <Accordion
@@ -119,7 +133,11 @@ const Attendance = () => {
         startOpen={isOpenAccordionWeekDay(week[1])}
       >
         {getAttendanceByDate(week[1])?.map((attendance, index) => (
-          <Card key={index} data={attendance} />
+          <Card
+            key={index}
+            data={attendance}
+            onClick={() => handleOpenDetails(attendance?.uid)}
+          />
         ))}
       </Accordion>
       <Accordion
@@ -127,7 +145,11 @@ const Attendance = () => {
         startOpen={isOpenAccordionWeekDay(week[2])}
       >
         {getAttendanceByDate(week[2])?.map((attendance, index) => (
-          <Card key={index} data={attendance} />
+          <Card
+            key={index}
+            data={attendance}
+            onClick={() => handleOpenDetails(attendance?.uid)}
+          />
         ))}
       </Accordion>
       <Accordion
@@ -135,7 +157,11 @@ const Attendance = () => {
         startOpen={isOpenAccordionWeekDay(week[3])}
       >
         {getAttendanceByDate(week[3])?.map((attendance, index) => (
-          <Card key={index} data={attendance} />
+          <Card
+            key={index}
+            data={attendance}
+            onClick={() => handleOpenDetails(attendance?.uid)}
+          />
         ))}
       </Accordion>
       <Accordion
@@ -143,7 +169,11 @@ const Attendance = () => {
         startOpen={isOpenAccordionWeekDay(week[4])}
       >
         {getAttendanceByDate(week[4])?.map((attendance, index) => (
-          <Card key={index} data={attendance} />
+          <Card
+            key={index}
+            data={attendance}
+            onClick={() => handleOpenDetails(attendance?.uid)}
+          />
         ))}
       </Accordion>
       <Accordion
@@ -151,7 +181,11 @@ const Attendance = () => {
         startOpen={isOpenAccordionWeekDay(week[5])}
       >
         {getAttendanceByDate(week[5])?.map((attendance, index) => (
-          <Card key={index} data={attendance} />
+          <Card
+            key={index}
+            data={attendance}
+            onClick={() => handleOpenDetails(attendance?.uid)}
+          />
         ))}
       </Accordion>
       <Accordion
@@ -159,7 +193,11 @@ const Attendance = () => {
         startOpen={isOpenAccordionWeekDay(week[6])}
       >
         {getAttendanceByDate(week[6])?.map((attendance, index) => (
-          <Card key={index} data={attendance} />
+          <Card
+            key={index}
+            data={attendance}
+            onClick={() => handleOpenDetails(attendance?.uid)}
+          />
         ))}
       </Accordion>
     </>
