@@ -27,7 +27,14 @@ const Card = ({ data, onClick }: CardProps) => {
           </p>
           <p className="text-white text-md mt-1">{data?.teacherName}</p>
         </div>
-        <p className="text-white text-md">Horário às {data?.time}</p>
+        <div className="flex flex-col items-end">
+          <p className="text-white text-md">{data?.time}</p>
+          {!data?.isActive && (
+            <div className="w-full mt-1 bg-red-500 py-1 px-2 rounded-lg">
+              <p className="text-xs text-white">Aula cancelada!</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

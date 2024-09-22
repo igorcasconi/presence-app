@@ -13,3 +13,5 @@ export type AttendanceProps = {
   title?: string;
   uid?: string;
 } & NamesProps;
+
+export type AttendanceUserList = { uid: string; name: string };

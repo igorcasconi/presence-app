@@ -73,6 +73,27 @@ export const setUserPresence = async (
   return { error };
 };
 
+export const changeStatusAttendanceList = async (
+  uid: string,
+  attendance: AttendanceProps
+) => {
+  let error;
+
+  delete attendance.modalityName;
+  delete attendance.teacherName;
+
+  try {
+    set(ref(database, `attendance/${uid}`), {
+      ...attendance,
+    });
+  } catch (err) {
+    console.log("error", err);
+    error = err;
+  }
+
+  return { error };
+};
+
 export const deleteAttendanceWithLessonId = async (lessonId: string) => {
   let attendancesRef = ref(database, "attendance");
   try {

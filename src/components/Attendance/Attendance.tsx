@@ -6,6 +6,7 @@ import {
   format,
   isSameDay,
   isSaturday,
+  isSunday,
   isToday,
   nextMonday,
   startOfWeek,
@@ -36,9 +37,10 @@ const Attendance = () => {
   >(undefined);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const dateForStartWeek = isSaturday(new Date())
-    ? nextMonday(new Date())
-    : new Date();
+  const dateForStartWeek =
+    isSaturday(new Date()) || isSunday(new Date())
+      ? nextMonday(new Date())
+      : new Date();
 
   const initialDayWeek = startOfWeek(dateForStartWeek, { weekStartsOn: 1 });
   const endDayWeek = addDays(initialDayWeek, 6);

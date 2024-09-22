@@ -23,18 +23,26 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [userFirebase, setUserFirebase] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [userData, setUserData] = useState<UserProps | null | undefined>(null);
+  const [userData, setUserData] = useState<UserProps>();
+
+  const getUserDatabase = async (uid: string) => {
+    const userDatabase = await getUserData(uid);
+
+    setUserData({
+      isActive: userDatabase?.isActive!,
+      isAdmin: userDatabase?.isAdmin!,
+      isStudent: userDatabase?.isStudent!,
+      isTeacher: userDatabase?.isTeacher!,
+      name: userDatabase?.name!,
+      uid,
+    });
+  };
 
   useEffect(() => {
-    const getUserDatabase = async (uid: string) => {
-      const userDatabase = await getUserData(uid);
-      setUserData({ ...userDatabase!, uid });
-    };
-
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        getUserDatabase(user.uid);
         setUserFirebase(user);
+        getUserDatabase(user.uid);
       } else {
         setUserFirebase(null);
       }
