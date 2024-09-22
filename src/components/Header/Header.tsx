@@ -6,6 +6,7 @@ import Image from "next/image";
 
 import { ArrowBackIcon, MenuIcon } from "../icons";
 import { Menu } from "../Menu";
+import { logout } from "@/firebase/auth/signin";
 
 const notShowHeader = ["/login", "/sign-up"];
 const Header = ({ children }: PropsWithChildren) => {
@@ -19,6 +20,17 @@ const Header = ({ children }: PropsWithChildren) => {
 
   const handleClickMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await fetch("api/logout");
+      await logout();
+      setIsMenuOpen(false);
+      router.replace("/login");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
   };
 
   return (
@@ -55,7 +67,11 @@ const Header = ({ children }: PropsWithChildren) => {
               <MenuIcon />
             </button>
           </div>
-          <Menu handleClickMenu={handleClickMenu} isOpen={isMenuOpen} />
+          <Menu
+            handleClickMenu={handleClickMenu}
+            isOpen={isMenuOpen}
+            handleLogout={handleLogout}
+          />
         </>
       )}
       <div className={`h-full ${isMenuOpen && `opacity-30`}`}>{children}</div>

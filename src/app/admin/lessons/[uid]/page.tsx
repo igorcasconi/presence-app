@@ -19,7 +19,7 @@ import { getModalityData } from "@/firebase/database/modality";
 import { getUserData } from "@/firebase/database/user";
 import { WEEK_DAYS_PT } from "@/helpers/date";
 import { toast } from "react-toastify";
-import { isFriday } from "date-fns";
+import { isFriday, isWeekend } from "date-fns";
 
 const LessonDetail = () => {
   const [lessonDetailData, setLessonDetailData] = useState<
@@ -85,7 +85,8 @@ const LessonDetail = () => {
   };
 
   const handleEnableGenerateButton = async () => {
-    if (isFriday(new Date())) {
+    const today = new Date();
+    if (isFriday(today) || isWeekend(today)) {
       await updateButtonGenerateLesson(params.uid, false);
       setIsEnabledGenerateButton(true);
     } else {

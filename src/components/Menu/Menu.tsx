@@ -4,15 +4,16 @@ import Image from "next/image";
 import { CloseIcon } from "../icons";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "../Button";
-import { logout } from "@/firebase/auth/signin";
 
 interface MenuProps {
   handleClickMenu: () => void;
   isOpen: boolean;
+  handleLogout: () => void;
 }
 
-const Menu = ({ handleClickMenu, isOpen }: MenuProps) => {
+const Menu = ({ handleClickMenu, isOpen, handleLogout }: MenuProps) => {
   const { userData } = useAuth();
+
   return (
     <div
       id="menu"
@@ -60,7 +61,7 @@ const Menu = ({ handleClickMenu, isOpen }: MenuProps) => {
             text="Sair"
             className="!bg-red-500 h-8"
             textStyle="text-sm"
-            onClick={logout}
+            onClick={handleLogout}
           />
         </div>
       </div>

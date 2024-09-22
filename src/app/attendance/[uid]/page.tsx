@@ -1,14 +1,23 @@
 "use client";
-import { Accordion, Button, CheckIcon, Loader, Modal } from "@/components";
+import {
+  Accordion,
+  Button,
+  CheckIcon,
+  Loader,
+  Modal,
+  InfoIcon,
+  WarningIcon,
+} from "@/components";
 import { useAuth } from "@/contexts/AuthContext";
 import {
+  changeStatusAttendanceList,
   getAttendanceData,
   setUserPresence,
 } from "@/firebase/database/attendance";
 import { getModalityData } from "@/firebase/database/modality";
 import { getUserData } from "@/firebase/database/user";
-import { AttendanceProps } from "@/shared/types/attendance";
-import { format, isPast } from "date-fns";
+import { AttendanceProps, AttendanceUserList } from "@/shared/types/attendance";
+import { differenceInHours, format, isPast, set } from "date-fns";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -20,15 +29,16 @@ const AttendanceDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isPastAttendance, setIsPastAttendance] = useState(false);
   const params = useParams<{ uid: string }>();
-  const { userData } = useAuth();
+  const { userData, userFirebase } = useAuth();
   const [isModalVisible, setModalVisible] = useState(false);
   const [userAlreadyPresent, setUserAlreadyPresent] = useState(false);
   const [attendanceListData, setAttendanceListData] = useState<
-    { uid: string; name: string }[]
+    AttendanceUserList[]
   >([]);
 
   const loadUserData = async () => {
-    setAttendanceListData([]);
+    if (!userData) return;
+
     try {
       const attendanceData = await getAttendanceData(params.uid);
       let modalityData;
@@ -39,15 +49,16 @@ const AttendanceDetails = () => {
         userDetailData = await getUserData(attendanceData?.teacher);
       }
 
-      attendanceData?.attendanceList?.forEach(async (user) => {
-        const userItem = await getUserData(user!);
-        setAttendanceListData((listData) => [
-          ...listData,
-          { uid: user, name: userItem?.name! },
-        ]);
-      });
+      const listUser = await Promise.all(
+        (attendanceData?.attendanceList || [])?.map(async (user) => {
+          const userItem = await getUserData(user!);
+          return { uid: user, name: userItem?.name! } as AttendanceUserList;
+        })
+      );
 
-      const userPresence = attendanceData?.attendanceList?.includes(
+      setAttendanceListData(listUser);
+
+      const userPresence = attendanceData?.attendanceList.includes(
         userData?.uid!
       );
 
@@ -57,9 +68,19 @@ const AttendanceDetails = () => {
         modalityName: modalityData?.name,
       } as AttendanceProps;
 
+      const splittedHour = attendanceData?.time.split(":");
+      const lessonDate = set(new Date(attendanceData?.date!), {
+        hours: Number(splittedHour![0]),
+        minutes: Number(splittedHour![1]),
+      });
+      const isMoreThanOneHourLeft =
+        differenceInHours(lessonDate, new Date()) > 1;
+
       setUserAlreadyPresent(Boolean(userPresence));
       setAttendanceDetailData(attendanceObject);
-      setIsPastAttendance(isPast(attendanceData?.date!));
+      setIsPastAttendance(
+        isPast(attendanceData?.date!) || !isMoreThanOneHourLeft
+      );
     } catch (error) {
       console.log(error);
     } finally {
@@ -68,12 +89,6 @@ const AttendanceDetails = () => {
   };
 
   const handleSetUserPresence = async () => {
-    if (isPastAttendance) {
-      return toast.info(
-        "A data dessa aula já ocorreu, não é possível mais confirmar presença!"
-      );
-    }
-
     let list = attendanceDetailData?.attendanceList ?? ([] as string[]);
     try {
       if (userAlreadyPresent) {
@@ -100,21 +115,28 @@ const AttendanceDetails = () => {
     }
   };
 
-  const handleCancelAttendance = async () => {
-    // try {
-    //   await deleteLesson(params.uid);
-    //   await deleteAttendanceWithLessonId(params.uid);
-    //   toast.success("Aula excluída com sucesso!");
-    //   router.push("/admin/lessons");
-    // } catch (error) {
-    //   toast.error("Ocorreu um erro ao deletar aula!");
-    // }
+  const handleChangeStatusAttendance = async () => {
+    try {
+      await changeStatusAttendanceList(params.uid, {
+        ...attendanceDetailData!,
+        isActive: !attendanceDetailData?.isActive,
+      });
+      toast.success(
+        `Aula ${
+          !attendanceDetailData?.isActive ? "ativar" : "cancelar"
+        } com sucesso!`
+      );
+      setModalVisible(false);
+      loadUserData();
+    } catch (error) {
+      toast.error("Ocorreu um erro ao cancelar/ativar esta aula!");
+    }
   };
 
   useEffect(() => {
     loadUserData();
     //eslint-disable-next-line
-  }, []);
+  }, [userData]);
 
   return (
     <div className="w-full h-full p-4 md:max-w-[500px] m-auto flex flex-col items-center">
@@ -126,11 +148,15 @@ const AttendanceDetails = () => {
         <>
           {isModalVisible && (
             <Modal
-              title="Cancelar aula?"
-              message="Realmente deseja cancelar esta aula?"
+              title={`${
+                !attendanceDetailData?.isActive ? "Ativar" : "Cancelar"
+              } aula?`}
+              message={`Realmente deseja ${
+                !attendanceDetailData?.isActive ? "ativar" : "cancelar"
+              } esta aula?`}
               confirmButtonLabel="Confirmar"
               cancelButtonLabel="Cancelar"
-              // onConfirmButton={handleDeleteLesson}
+              onConfirmButton={handleChangeStatusAttendance}
               onCancelButton={() => setModalVisible(false)}
               onCloseModal={() => setModalVisible(false)}
             />
@@ -186,26 +212,57 @@ const AttendanceDetails = () => {
           </div>
 
           <div className="flex w-full">
-            {(userData?.isTeacher || userData?.isAdmin) && (
-              <Button
-                text="Cancelar aula"
-                className="!bg-red-500 h-8 max-w-[140px] mr-2"
-                textStyle="text-xs"
-                onClick={() => setModalVisible(true)}
-                disabled={isPastAttendance}
-              />
-            )}
+            {(userData?.isTeacher || userData?.isAdmin) &&
+              !isPastAttendance && (
+                <Button
+                  text={`${
+                    !attendanceDetailData?.isActive ? "Ativar" : "Cancelar"
+                  } aula`}
+                  className={`${
+                    attendanceDetailData?.isActive
+                      ? "!bg-red-500"
+                      : "!bg-green-600"
+                  } h-8 max-w-[140px] mr-2`}
+                  textStyle="text-xs"
+                  onClick={() => setModalVisible(true)}
+                />
+              )}
 
-            <Button
-              text={
-                userAlreadyPresent ? "Cancelar presença" : "Confirmar presença"
-              }
-              className={`${
-                userAlreadyPresent ? "!bg-red-500" : "!bg-green-600"
-              } h-8 max-w-[200px]`}
-              textStyle="text-xs"
-              onClick={handleSetUserPresence}
-            />
+            {userData?.isActive &&
+              userData?.isStudent &&
+              !isPastAttendance &&
+              attendanceDetailData?.isActive && (
+                <Button
+                  text={
+                    userAlreadyPresent
+                      ? "Cancelar presença"
+                      : "Confirmar presença"
+                  }
+                  className={`${
+                    userAlreadyPresent ? "!bg-red-500" : "!bg-green-600"
+                  } h-8 max-w-[200px]`}
+                  textStyle="text-xs"
+                  onClick={handleSetUserPresence}
+                />
+              )}
+          </div>
+
+          {!attendanceDetailData?.isActive && (
+            <div className="w-full mt-4 bg-red-500 p-2 rounded-lg">
+              <p className="text-sm text-white">Aula cancelada!</p>
+            </div>
+          )}
+
+          <div className="w-full mt-2">
+            {isPastAttendance && (
+              <div className="w-full flex flex-col items-center h-auto p-2 bg-yellow-300 rounded-lg">
+                <WarningIcon />
+                <p className="text-sm text-black mt-2">
+                  A data dessa aula já ocorreu ou falta apenas 1 hora para esta
+                  aula começar. Não é possível mais confirmar presença!
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="w-full">
@@ -222,6 +279,16 @@ const AttendanceDetails = () => {
               ))}
             </Accordion>
           </div>
+
+          {!isPastAttendance && (
+            <div className="w-full flex flex-col items-center h-auto p-2 bg-blue-300 rounded-lg mt-4">
+              <InfoIcon />
+              <p className="text-sm text-black ml-2 mt-2">
+                Lembre-se, a confirmação da sua presença nesta aula poderá ser
+                feita até com 1 hora de antecedência.
+              </p>
+            </div>
+          )}
         </>
       )}
     </div>
