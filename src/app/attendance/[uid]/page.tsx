@@ -29,7 +29,7 @@ const AttendanceDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isPastAttendance, setIsPastAttendance] = useState(false);
   const params = useParams<{ uid: string }>();
-  const { userData, userFirebase } = useAuth();
+  const { userData } = useAuth();
   const [isModalVisible, setModalVisible] = useState(false);
   const [userAlreadyPresent, setUserAlreadyPresent] = useState(false);
   const [attendanceListData, setAttendanceListData] = useState<
@@ -76,6 +76,7 @@ const AttendanceDetails = () => {
 
       setUserAlreadyPresent(Boolean(userPresence));
       setAttendanceDetailData(attendanceObject);
+      setAttendanceListData(listUser);
       setIsPastAttendance(
         isPast(attendanceData?.date!) || !isMoreThanOneHourLeft
       );
@@ -270,7 +271,7 @@ const AttendanceDetails = () => {
               emptyText="Não há presença para essa aula!"
             >
               {attendanceListData?.map((user, index) => (
-                <div key={`${user}-${index}`} className="flex items-center">
+                <div key={`${user.uid}-${index}`} className="flex items-center">
                   <CheckIcon />
                   <p className="text-white text-md ml-2">{user.name}</p>
                 </div>

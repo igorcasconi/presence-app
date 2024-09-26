@@ -24,7 +24,7 @@ const Header = ({ children }: PropsWithChildren) => {
 
   const handleLogout = async () => {
     try {
-      await fetch("api/logout");
+      await fetch("/api/logout");
       await logout();
       setIsMenuOpen(false);
       router.replace("/login");
