@@ -56,9 +56,7 @@ const AttendanceDetails = () => {
         })
       );
 
-      setAttendanceListData(listUser);
-
-      const userPresence = attendanceData?.attendanceList.includes(
+      const userPresence = (attendanceData?.attendanceList || []).includes(
         userData?.uid!
       );
 
@@ -285,7 +283,9 @@ const AttendanceDetails = () => {
               <InfoIcon />
               <p className="text-sm text-black ml-2 mt-2">
                 Lembre-se, a confirmação da sua presença nesta aula poderá ser
-                feita até com 1 hora de antecedência.
+                feita até com 1 hora de antecedência. Faltando menos de 1 hora e
+                caso não compareça ou ainda gostaria de participar da aula,
+                entre em contato com o Professor via WhatsApp
               </p>
             </div>
           )}
