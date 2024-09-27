@@ -7,6 +7,7 @@ import {
   Modal,
   InfoIcon,
   WarningIcon,
+  InfoCard,
 } from "@/components";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -254,13 +255,11 @@ const AttendanceDetails = () => {
 
           <div className="w-full mt-2">
             {isPastAttendance && (
-              <div className="w-full flex flex-col items-center h-auto p-2 bg-yellow-300 rounded-lg">
-                <WarningIcon />
-                <p className="text-sm text-black mt-2">
-                  A data dessa aula já ocorreu ou falta apenas 1 hora para esta
-                  aula começar. Não é possível mais confirmar presença!
-                </p>
-              </div>
+              <InfoCard
+                type="warning"
+                text=" A data dessa aula já ocorreu ou falta apenas 1 hora para esta
+                  aula começar. Não é possível mais confirmar presença!"
+              />
             )}
           </div>
 
@@ -280,15 +279,13 @@ const AttendanceDetails = () => {
           </div>
 
           {!isPastAttendance && (
-            <div className="w-full flex flex-col items-center h-auto p-2 bg-blue-300 rounded-lg mt-4">
-              <InfoIcon />
-              <p className="text-sm text-black ml-2 mt-2">
-                Lembre-se, a confirmação da sua presença nesta aula poderá ser
+            <InfoCard
+              text="Lembre-se, a confirmação da sua presença nesta aula poderá ser
                 feita até com 1 hora de antecedência. Faltando menos de 1 hora e
                 caso não compareça ou ainda gostaria de participar da aula,
-                entre em contato com o Professor via WhatsApp
-              </p>
-            </div>
+                entre em contato com o Professor via WhatsApp"
+              type="info"
+            />
           )}
         </>
       )}

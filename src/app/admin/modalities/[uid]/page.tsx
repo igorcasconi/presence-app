@@ -6,10 +6,12 @@ import { useParams, useRouter } from "next/navigation";
 import { Loader, PencilIcon, Switch } from "@/components";
 import {
   createUpdateModality,
+  deleteModality,
   getModalityData,
 } from "@/firebase/database/modality";
 
 import { ModalityProps } from "@/shared/types/modality";
+import { toast } from "react-toastify";
 
 const UserDetails = () => {
   const [modalityDetailData, setModalityDetailData] = useState<

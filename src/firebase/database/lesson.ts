@@ -15,6 +15,7 @@ import { v4 as uuidv4 } from "uuid";
 import { app } from "../config";
 
 import { LessonFormProps, LessonProps } from "@/shared/types/lesson";
+import { differenceInDays } from "date-fns";
 
 const database = getDatabase(app);
 
@@ -83,6 +84,32 @@ export const deleteLesson = async (lessonId: string) => {
   } catch (error) {
     console.error("Error deleting lesson:", error);
     return false;
+  }
+};
+
+export const deleteOldLessons = async () => {
+  let lessonsRef = ref(database, "lessons");
+  try {
+    // @ts-ignore
+    lessonsRef = query(lessonsRef, orderByKey());
+    const snapshot = await get(lessonsRef);
+    if (snapshot.exists()) {
+      const data = snapshot.val() as { [key: string]: LessonProps };
+      Object.keys(data).forEach((key) => {
+        const today = new Date();
+
+        const numberOfDays = differenceInDays(today, new Date(data[key].date!));
+
+        if (numberOfDays >= 2) {
+          remove(ref(database, `lessons/${key}`));
+        }
+      });
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error delete old lesson:", error);
+    return null;
   }
 };
 

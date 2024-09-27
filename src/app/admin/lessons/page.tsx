@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { format } from "date-fns";
 
 import { Button, Loader } from "@/components";
-import { getLessonList } from "@/firebase/database/lesson";
+import { deleteOldLessons, getLessonList } from "@/firebase/database/lesson";
 
 import { LessonProps } from "@/shared/types/lesson";
 import { getModalitySelectList } from "@/firebase/database/modality";
@@ -36,8 +36,7 @@ const Lesson = () => {
         const keys = Object.keys(data);
         if (keys.length > 0) {
           const lastItemKey = keys[keys.length - 1];
-          setLastKey(lastItemKey);
-          setHasMore(keys.length === ITEMS_PER_PAGE + 1);
+
           setLesson((prevLesson) => [
             ...prevLesson,
             ...keys
@@ -65,6 +64,9 @@ const Lesson = () => {
               })
               .filter((lesson) => !!lesson.uid),
           ]);
+
+          setLastKey(lastItemKey);
+          setHasMore(keys.length > ITEMS_PER_PAGE - 1);
         } else {
           setHasMore(false);
         }
@@ -86,8 +88,13 @@ const Lesson = () => {
   };
 
   useEffect(() => {
-    loadClassList();
-    deleteOldAttendance();
+    const handleLoadList = async () => {
+      await deleteOldLessons();
+      await deleteOldAttendance();
+      loadClassList();
+    };
+
+    handleLoadList();
     //eslint-disable-next-line
   }, []);
 

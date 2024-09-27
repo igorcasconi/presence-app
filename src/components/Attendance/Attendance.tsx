@@ -126,15 +126,17 @@ const Attendance = () => {
         </div>
       ) : (
         <div className="w-full">
-          <Accordion title="Aulas avulsas" startOpen={true}>
-            {singleLessonAttendanceData?.map((attendance, index) => (
-              <Card
-                key={index}
-                data={attendance}
-                onClick={() => handleOpenDetails(attendance?.uid)}
-              />
-            ))}
-          </Accordion>
+          {!!singleLessonAttendanceData?.length && (
+            <Accordion title="Aulas avulsas" startOpen={true}>
+              {singleLessonAttendanceData?.map((attendance, index) => (
+                <Card
+                  key={index}
+                  data={attendance}
+                  onClick={() => handleOpenDetails(attendance?.uid)}
+                />
+              ))}
+            </Accordion>
+          )}
           <Accordion
             title={`Segunda-feira ${format(week[0], "dd/MM")}`}
             startOpen={isOpenAccordionWeekDay(week[0])}
