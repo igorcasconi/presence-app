@@ -34,7 +34,7 @@ const Header = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <div className="h-[100vh] relative">
+    <div className="h-[100vh] relative w-full">
       {!notShowHeader.includes(pathname) && (
         <>
           <div

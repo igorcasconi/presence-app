@@ -16,6 +16,7 @@ import { app } from "../config";
 
 import { LessonFormProps, LessonProps } from "@/shared/types/lesson";
 import { differenceInDays } from "date-fns";
+import { INCREASE_LIMIT_PAGE, MAX_DAYS_NUMBER } from "@/constants";
 
 const database = getDatabase(app);
 
@@ -100,7 +101,7 @@ export const deleteOldLessons = async () => {
 
         const numberOfDays = differenceInDays(today, new Date(data[key].date!));
 
-        if (numberOfDays >= 2) {
+        if (numberOfDays >= MAX_DAYS_NUMBER) {
           remove(ref(database, `lessons/${key}`));
         }
       });
@@ -122,7 +123,7 @@ export const getLessonList = async (startKey: string | null, limit: number) => {
       lessonsRef,
       orderByKey(),
       startAt(startKey),
-      limitToFirst(limit + 1)
+      limitToFirst(limit + INCREASE_LIMIT_PAGE)
     );
   } else {
     // @ts-ignore

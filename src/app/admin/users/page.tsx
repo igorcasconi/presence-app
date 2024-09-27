@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Loader } from "@/components";
+import { DECREASE_LIMIT_PAGE } from "@/constants";
 import { getUserList } from "@/firebase/database/user";
 import { UserProps } from "@/shared/types/user";
 import { useRouter } from "next/navigation";
@@ -11,22 +12,19 @@ const ITEMS_PER_PAGE = 10;
 const Users = () => {
   const [users, setUsers] = useState<UserProps[]>([]);
   const [lastKey, setLastKey] = useState<string | null>(null);
-  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [hasMore, setHasMore] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
   const router = useRouter();
 
   const loadUserList = async () => {
-    if (!hasMore) {
-      return;
-    }
     try {
       const data = await getUserList(lastKey, ITEMS_PER_PAGE);
 
       if (data) {
         const keys = Object.keys(data);
-        if (keys.length > 0) {
-          const lastItemKey = keys[keys.length - 1];
+        if (!!keys.length) {
+          const lastItemKey = keys[keys.length - DECREASE_LIMIT_PAGE];
 
           setUsers((prevUsers) => [
             ...prevUsers,
@@ -43,7 +41,7 @@ const Users = () => {
           ]);
 
           setLastKey(lastItemKey);
-          setHasMore(keys.length > ITEMS_PER_PAGE - 1);
+          setHasMore(keys.length > ITEMS_PER_PAGE - DECREASE_LIMIT_PAGE);
         } else {
           setHasMore(false);
         }

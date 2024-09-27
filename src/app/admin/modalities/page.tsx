@@ -7,31 +7,26 @@ import { Button, Loader } from "@/components";
 import { getModalityList } from "@/firebase/database/modality";
 
 import { UserProps } from "@/shared/types/user";
+import { DECREASE_LIMIT_PAGE } from "@/constants";
 
 const ITEMS_PER_PAGE = 10;
 
 const Modalities = () => {
   const [modalities, setModalities] = useState<UserProps[]>([]);
   const [lastKey, setLastKey] = useState<string | null>(null);
-  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [hasMore, setHasMore] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
   const router = useRouter();
 
-  console.log(hasMore);
-
   const loadModalities = async () => {
-    if (!hasMore) {
-      return;
-    }
-
     try {
       const data = await getModalityList(lastKey, ITEMS_PER_PAGE);
 
       if (data) {
         const keys = Object.keys(data);
-        if (keys.length > 0) {
-          const lastItemKey = keys[keys.length - 1];
+        if (!!keys.length) {
+          const lastItemKey = keys[keys.length - DECREASE_LIMIT_PAGE];
 
           setModalities((prevModalities) => [
             ...prevModalities,
@@ -49,7 +44,7 @@ const Modalities = () => {
           ]);
 
           setLastKey(lastItemKey);
-          setHasMore(keys.length > ITEMS_PER_PAGE - 1);
+          setHasMore(keys.length > ITEMS_PER_PAGE - DECREASE_LIMIT_PAGE);
         } else {
           setHasMore(false);
         }
