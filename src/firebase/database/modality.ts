@@ -7,6 +7,7 @@ import {
   set,
   startAt,
   query,
+  remove,
 } from "firebase/database";
 import { app } from "../config";
 import { ModalityProps } from "@/shared/types/modality";
@@ -90,10 +91,13 @@ export const getModalitySelectList = async () => {
     const snapshot = await get(modalitiesRef);
     if (snapshot.exists()) {
       const data = snapshot.val() as { [key: string]: ModalityProps };
-      const arrayData = Object.keys(data).map((key) => ({
-        uid: key,
-        ...data[key],
-      }));
+      const arrayData = Object.keys(data)
+        .map((key) => ({
+          uid: key,
+          ...data[key],
+        }))
+        .filter((modality) => modality.isActive);
+
       return arrayData;
     } else {
       return null;
@@ -101,5 +105,15 @@ export const getModalitySelectList = async () => {
   } catch (error) {
     console.error("Error fetching modality list:", error);
     return null;
+  }
+};
+
+export const deleteModality = async (modalityId: string) => {
+  try {
+    await remove(ref(database, `modalities/${modalityId}`));
+    return true;
+  } catch (error) {
+    console.error("Error deleting modality:", error);
+    return false;
   }
 };

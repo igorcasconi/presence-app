@@ -18,10 +18,13 @@ const Modalities = () => {
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
   const router = useRouter();
 
+  console.log(hasMore);
+
   const loadModalities = async () => {
     if (!hasMore) {
       return;
     }
+
     try {
       const data = await getModalityList(lastKey, ITEMS_PER_PAGE);
 
@@ -29,8 +32,7 @@ const Modalities = () => {
         const keys = Object.keys(data);
         if (keys.length > 0) {
           const lastItemKey = keys[keys.length - 1];
-          setLastKey(lastItemKey);
-          setHasMore(keys.length === ITEMS_PER_PAGE + 1);
+
           setModalities((prevModalities) => [
             ...prevModalities,
             ...keys
@@ -45,6 +47,9 @@ const Modalities = () => {
               })
               .filter((modality) => !!modality.uid),
           ]);
+
+          setLastKey(lastItemKey);
+          setHasMore(keys.length > ITEMS_PER_PAGE - 1);
         } else {
           setHasMore(false);
         }

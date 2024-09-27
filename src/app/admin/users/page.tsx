@@ -27,8 +27,7 @@ const Users = () => {
         const keys = Object.keys(data);
         if (keys.length > 0) {
           const lastItemKey = keys[keys.length - 1];
-          setLastKey(lastItemKey);
-          setHasMore(keys.length === ITEMS_PER_PAGE + 1);
+
           setUsers((prevUsers) => [
             ...prevUsers,
             ...keys
@@ -42,6 +41,9 @@ const Users = () => {
               })
               .filter((user) => !!user.uid),
           ]);
+
+          setLastKey(lastItemKey);
+          setHasMore(keys.length > ITEMS_PER_PAGE - 1);
         } else {
           setHasMore(false);
         }

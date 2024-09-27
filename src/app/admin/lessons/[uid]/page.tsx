@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
-import { Button, Loader, Modal } from "@/components";
+import { Button, InfoCard, Loader, Modal } from "@/components";
 import {
   deleteLesson,
   getLessonData,
@@ -138,6 +138,20 @@ const LessonDetail = () => {
               onClick={() => setModalVisible(true)}
             />
           </div>
+
+          {!!lessonDetailData?.title && (
+            <div className="w-full">
+              <div className="flex flex-col items-start">
+                <h2 className="text-gray-300 text-md">Aula Avulsa</h2>
+                <div className="mb-4">
+                  <h3 className="text-secondary text-xl">
+                    {lessonDetailData?.title}
+                  </h3>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="w-full">
             <div className="flex flex-col items-start">
               <h2 className="text-gray-300 text-md">Aula</h2>
@@ -179,16 +193,23 @@ const LessonDetail = () => {
           )}
 
           {!!lessonDetailData?.weekDays?.length && (
-            <div className="flex w-full justify-end">
-              <Button
-                text="Gerar as próximas aulas"
-                className="h-10"
-                textStyle="text-xs"
-                onClick={handleGenerateLessonDays}
-                loading={isLoadingGenerate}
-                disabled={!isEnabledGenerateButton}
+            <>
+              <div className="flex w-full justify-end">
+                <Button
+                  text="Gerar as próximas aulas"
+                  className="h-10"
+                  textStyle="text-xs"
+                  onClick={handleGenerateLessonDays}
+                  loading={isLoadingGenerate}
+                  disabled={!isEnabledGenerateButton}
+                />
+              </div>
+
+              <InfoCard
+                type="info"
+                text="Lembre-se para gerar as próximas aulas, o botão será liberado sempre na sexta-feira!"
               />
-            </div>
+            </>
           )}
         </>
       )}
