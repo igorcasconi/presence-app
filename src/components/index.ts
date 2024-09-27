@@ -11,3 +11,4 @@ export * from "./Attendance";
 export * from "./Card";
 export * from "./Header";
 export * from "./InfoCard";
+export * from "./Footer";

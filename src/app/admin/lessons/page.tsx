@@ -11,22 +11,19 @@ import { LessonProps } from "@/shared/types/lesson";
 import { getModalitySelectList } from "@/firebase/database/modality";
 import { getTeacherSelectList } from "@/firebase/database/user";
 import { deleteOldAttendance } from "@/firebase/database/attendance";
+import { DECREASE_LIMIT_PAGE } from "@/constants";
 
 const ITEMS_PER_PAGE = 10;
 
 const Lesson = () => {
   const [lesson, setLesson] = useState<LessonProps[]>([]);
   const [lastKey, setLastKey] = useState<string | null>(null);
-  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [hasMore, setHasMore] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
   const router = useRouter();
 
   const loadClassList = async () => {
-    if (!hasMore) {
-      return;
-    }
-
     try {
       const data = await getLessonList(lastKey, ITEMS_PER_PAGE);
       const modalitiesData = await getModalitySelectList();
@@ -34,8 +31,8 @@ const Lesson = () => {
 
       if (data) {
         const keys = Object.keys(data);
-        if (keys.length > 0) {
-          const lastItemKey = keys[keys.length - 1];
+        if (!!keys.length) {
+          const lastItemKey = keys[keys.length - DECREASE_LIMIT_PAGE];
 
           setLesson((prevLesson) => [
             ...prevLesson,
@@ -66,9 +63,7 @@ const Lesson = () => {
           ]);
 
           setLastKey(lastItemKey);
-          setHasMore(keys.length > ITEMS_PER_PAGE - 1);
-        } else {
-          setHasMore(false);
+          setHasMore(keys.length > ITEMS_PER_PAGE - DECREASE_LIMIT_PAGE);
         }
       }
     } catch (error) {

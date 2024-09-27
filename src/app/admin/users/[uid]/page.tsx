@@ -43,7 +43,7 @@ const UserDetails = () => {
   }, []);
 
   return (
-    <div className="w-full h-full p-4 md:max-w-[500px] m-auto flex flex-col items-center">
+    <div className="w-full h-full pt-4 px-4 md:max-w-[500px] m-auto flex flex-col items-center">
       {isLoading ? (
         <div className="justify-center mt-[50%]">
           <Loader />

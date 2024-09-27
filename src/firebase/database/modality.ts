@@ -11,6 +11,7 @@ import {
 } from "firebase/database";
 import { app } from "../config";
 import { ModalityProps } from "@/shared/types/modality";
+import { INCREASE_LIMIT_PAGE } from "@/constants";
 
 const database = getDatabase(app);
 
@@ -44,7 +45,7 @@ export const getModalityList = async (
       modalitiesRef,
       orderByKey(),
       startAt(startKey),
-      limitToFirst(limit + 1)
+      limitToFirst(limit + INCREASE_LIMIT_PAGE)
     );
   } else {
     // @ts-ignore

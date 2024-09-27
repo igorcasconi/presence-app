@@ -6,7 +6,7 @@ import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContextProvider } from "@/contexts/AuthContext";
 
-import { Header } from "@/components";
+import { Footer, Header } from "@/components";
 
 const inter = Montserrat({ subsets: ["latin"] });
 
@@ -25,6 +25,8 @@ export default function RootLayout({
         <AuthContextProvider>
           <Header>{children}</Header>
           <ToastContainer position="top-center" />
+
+          <Footer />
         </AuthContextProvider>
       </body>
     </html>

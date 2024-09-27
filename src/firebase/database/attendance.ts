@@ -20,6 +20,7 @@ import { app } from "../config";
 import { LessonProps } from "@/shared/types/lesson";
 import { getDate } from "@/helpers/date";
 import { AttendanceProps } from "@/shared/types/attendance";
+import { MAX_WEEK_NUMBER } from "@/constants";
 
 const database = getDatabase(app);
 
@@ -132,7 +133,7 @@ export const deleteOldAttendance = async () => {
           new Date(data[key].date)
         );
 
-        if (numberOfWeeks >= 2) {
+        if (numberOfWeeks >= MAX_WEEK_NUMBER) {
           remove(ref(database, `attendance/${key}`));
         }
       });

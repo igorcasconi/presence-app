@@ -37,6 +37,7 @@ const SignUpView = () => {
     }
 
     await updateUserData(values.name);
+    toast.success("Seu usuário foi cadastrado com sucesso!");
     return router.push("/login");
   };
 
