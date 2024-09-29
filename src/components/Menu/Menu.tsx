@@ -74,7 +74,7 @@ const Menu = ({ handleClickMenu, isOpen, handleLogout }: MenuProps) => {
           </p>
           <Button
             text="Sair"
-            className="!bg-red-500 h-8"
+            className="!bg-red-500 h-8 md:max-w-[150px]"
             textStyle="text-sm"
             onClick={handleLogout}
           />

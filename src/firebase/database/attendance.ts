@@ -11,6 +11,7 @@ import {
   differenceInWeeks,
   nextSunday as getNextSunday,
   isPast,
+  isSunday,
   isWithinInterval,
 } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
@@ -26,7 +27,8 @@ const database = getDatabase(app);
 
 export const createAttendanceList = async (lesson: LessonProps) => {
   let error;
-  const dateNextSunday = getNextSunday(new Date());
+  const today = new Date();
+  const dateNextSunday = isSunday(today) ? today : getNextSunday(today);
 
   try {
     if (!!lesson.weekDays?.length) {
@@ -39,7 +41,7 @@ export const createAttendanceList = async (lesson: LessonProps) => {
           modality: lesson.modality,
           teacher: lesson.teacher,
           time: lesson.time,
-          date: date,
+          date: `${date}T00:00:00`,
           lessonId: lesson.uid,
         });
       });
