@@ -20,6 +20,7 @@
 body {
   color: rgb(var(--foreground-rgb));
   background-color: var(--primary);
+  height: 100vh;
 }
 
 @layer utilities {

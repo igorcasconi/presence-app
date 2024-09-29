@@ -1,3 +1,4 @@
+import { AttendanceProps } from "@/shared/types/attendance";
 import {
   nextMonday,
   nextThursday,
@@ -7,6 +8,8 @@ import {
   nextSaturday,
   nextSunday,
   format,
+  set,
+  isToday,
 } from "date-fns";
 
 export enum WEEK_DAYS_PT {
@@ -49,4 +52,28 @@ export const getDate = (weekDayName: string, dateNextSunday: Date) => {
   }
 
   return format(date, "yyyy-MM-dd");
+};
+
+export const handleSortData = (
+  dataLeft: AttendanceProps,
+  dataRight: AttendanceProps
+) => {
+  const splittedTimeRight = dataRight.time.split(":");
+  const dateRight = set(new Date(dataRight.date), {
+    hours: Number(splittedTimeRight[0]),
+    minutes: Number(splittedTimeRight[1]),
+  });
+
+  const splittedTimeLeft = dataLeft.time.split(":");
+  const dateLeft = set(new Date(dataLeft.date), {
+    hours: Number(splittedTimeLeft[0]),
+    minutes: Number(splittedTimeLeft[1]),
+  });
+
+  if (dateLeft < dateRight) return -1;
+  return 1;
+};
+
+export const isOpenAccordionWeekDay = (weekDay: Date) => {
+  return isToday(weekDay);
 };

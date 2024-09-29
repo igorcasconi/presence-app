@@ -108,7 +108,7 @@ const Modalities = () => {
           {hasMore && !isLoading && (
             <Button
               onClick={loadModalities}
-              text="Carregar mais usuários"
+              text="Carregar mais modalidades..."
               className="h-8 mt-4"
               loading={isLoadingMore}
             />

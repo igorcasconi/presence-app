@@ -34,7 +34,7 @@ const Header = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <div className="h-[100vh] relative w-full">
+    <div className="h-full relative w-full">
       {!notShowHeader.includes(pathname) && (
         <>
           <div
@@ -74,7 +74,7 @@ const Header = ({ children }: PropsWithChildren) => {
           />
         </>
       )}
-      <div className={`h-full ${isMenuOpen && `opacity-30`}`}>{children}</div>
+      <div className={`${isMenuOpen && `opacity-30`}`}>{children}</div>
     </div>
   );
 };
