@@ -5,8 +5,6 @@ import {
   CheckIcon,
   Loader,
   Modal,
-  InfoIcon,
-  WarningIcon,
   InfoCard,
 } from "@/components";
 import { useAuth } from "@/contexts/AuthContext";
@@ -18,7 +16,7 @@ import {
 import { getModalityData } from "@/firebase/database/modality";
 import { getUserData } from "@/firebase/database/user";
 import { AttendanceProps, AttendanceUserList } from "@/shared/types/attendance";
-import { differenceInHours, format, isPast, set } from "date-fns";
+import { differenceInHours, format, set } from "date-fns";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -78,9 +76,7 @@ const AttendanceDetails = () => {
       setUserAlreadyPresent(Boolean(userPresence));
       setAttendanceDetailData(attendanceObject);
       setAttendanceListData(listUser);
-      setIsPastAttendance(
-        isPast(attendanceData?.date!) || !isMoreThanOneHourLeft
-      );
+      setIsPastAttendance(!isMoreThanOneHourLeft);
     } catch (error) {
       console.log(error);
     } finally {
