@@ -132,7 +132,7 @@ const Lesson = () => {
           {hasMore && !isLoading && !!lesson.length && (
             <Button
               onClick={loadClassList}
-              text="Carregar mais usuários"
+              text="Carregar mais aulas..."
               className="h-8 mt-4"
               loading={isLoadingMore}
             />

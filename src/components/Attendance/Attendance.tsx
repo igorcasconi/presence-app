@@ -7,7 +7,6 @@ import {
   isSameDay,
   isSaturday,
   isSunday,
-  isToday,
   nextMonday,
   startOfWeek,
 } from "date-fns";
@@ -23,10 +22,7 @@ import { getModalityData } from "@/firebase/database/modality";
 import { getUserData } from "@/firebase/database/user";
 import { useRouter } from "next/navigation";
 import { Loader } from "../Loader";
-
-const isOpenAccordionWeekDay = (weekDay: Date) => {
-  return isToday(weekDay);
-};
+import { handleSortData, isOpenAccordionWeekDay } from "@/helpers/date";
 
 const Attendance = () => {
   const [attendanceData, setAttendanceData] = useState<
@@ -73,10 +69,12 @@ const Attendance = () => {
             modalityName: modalityData?.name,
             teacherName: userDetailData?.name,
           } as AttendanceProps;
-        }) || []
+        }) || ([] as AttendanceProps[])
       );
 
-      setAttendanceData(modifiedData);
+      const arrayDataSorted = modifiedData.sort(handleSortData);
+
+      setAttendanceData(arrayDataSorted);
     } catch (error) {
       console.log(error);
     } finally {
