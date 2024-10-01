@@ -13,6 +13,10 @@ import {
   isPast,
   isSunday,
   isWithinInterval,
+  isThisWeek,
+  isFriday,
+  isWeekend,
+  previousSunday,
 } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
 
@@ -27,14 +31,22 @@ const database = getDatabase(app);
 
 export const createAttendanceList = async (lesson: LessonProps) => {
   let error;
+  let dateSunday = new Date();
   const today = new Date();
-  const dateNextSunday = isSunday(today) ? today : getNextSunday(today);
+
+  if (isSunday(today)) dateSunday = today;
+  else if (isFriday(today) || isWeekend(today))
+    dateSunday = getNextSunday(today);
+  else dateSunday = previousSunday(today);
 
   try {
     if (!!lesson.weekDays?.length) {
       lesson.weekDays.forEach((day) => {
         const uid = uuidv4();
-        const date = getDate(day, dateNextSunday);
+        const date = getDate(day, dateSunday);
+
+        if (isPast(date)) return;
+
         set(ref(database, "attendance/" + uid), {
           isActive: true,
           createdAt: new Date(),
@@ -220,5 +232,37 @@ export const getAttendanceData = async (attendanceId: string) => {
   } catch (error) {
     console.error("Error fetching user:", error);
     return null;
+  }
+};
+
+export const getThereIsLessonOnThisWeek = async (
+  lessonId: string
+): Promise<boolean> => {
+  const attendanceRef = ref(database, "attendance");
+
+  try {
+    const snapshot = await get(attendanceRef);
+
+    if (snapshot.exists()) {
+      const data = snapshot.val() as { [key: string]: AttendanceProps };
+      const thereIsLesson = Object.keys(data)
+        .filter((key) => data[key].lessonId === lessonId)
+        .find((key) => {
+          const numberOfWeeks = differenceInWeeks(
+            new Date(data[key].date),
+            new Date()
+          );
+          if (isThisWeek(new Date(data[key].date)) || numberOfWeeks === 1)
+            return data[key];
+        });
+
+      return !!thereIsLesson;
+    } else {
+      console.log("No data available");
+      return false;
+    }
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return false;
   }
 };
