@@ -2,9 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { format } from "date-fns";
 
-import { Button, Loader } from "@/components";
+import { Button, LessonCard, Loader } from "@/components";
 import { deleteOldLessons, getLessonList } from "@/firebase/database/lesson";
 
 import { LessonProps } from "@/shared/types/lesson";
@@ -12,6 +11,7 @@ import { getModalitySelectList } from "@/firebase/database/modality";
 import { getTeacherSelectList } from "@/firebase/database/user";
 import { deleteOldAttendance } from "@/firebase/database/attendance";
 import { DECREASE_LIMIT_PAGE } from "@/constants";
+import { WEEK_DAYS_PT } from "@/helpers/date";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -50,12 +50,20 @@ const Lesson = () => {
                   (teacher) => teacher?.uid === data[lesson]?.teacher
                 )?.name;
 
+                const translateWeekDays = data[lesson]?.weekDays?.map(
+                  (week) => {
+                    //@ts-ignore
+                    return WEEK_DAYS_PT[week];
+                  }
+                );
+
                 if (existUser === -1)
                   return {
-                    uid: lesson,
                     ...data[lesson],
+                    uid: lesson,
                     modality: modalityName,
                     teacher: teacherName,
+                    translateWeekDays: translateWeekDays,
                   };
                 else return {} as LessonProps;
               })
@@ -109,24 +117,14 @@ const Lesson = () => {
           <Loader />
         </div>
       ) : (
-        <div className="w-full">
+        <div className="w-full mb-8">
           <ul>
             {lesson.map((item) => (
-              <li
+              <LessonCard
                 key={item.uid}
-                className="border-b-[1px] py-2 px-4 flex justify-between cursor-pointer"
+                data={item}
                 onClick={() => handleRouteLessonDetail(item.uid)}
-              >
-                <p className="text-white text-md">{item.modality}</p>
-                <p className="text-white text-md">
-                  {!!item.date
-                    ? `${format(item.date, "dd/MM/yyyy")} às ${item.time}`
-                    : item.time}
-                </p>
-                <p className="text-white text-md">
-                  {item.teacher?.split(" ")[0]}
-                </p>
-              </li>
+              />
             ))}
           </ul>
           {hasMore && !isLoading && !!lesson.length && (

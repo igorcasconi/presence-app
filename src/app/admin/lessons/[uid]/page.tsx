@@ -12,6 +12,7 @@ import {
 import {
   createAttendanceList,
   deleteAttendanceWithLessonId,
+  getThereIsLessonOnThisWeek,
 } from "@/firebase/database/attendance";
 
 import { LessonProps } from "@/shared/types/lesson";
@@ -19,7 +20,6 @@ import { getModalityData } from "@/firebase/database/modality";
 import { getUserData } from "@/firebase/database/user";
 import { WEEK_DAYS_PT } from "@/helpers/date";
 import { toast } from "react-toastify";
-import { isFriday, isWeekend } from "date-fns";
 
 const LessonDetail = () => {
   const [lessonDetailData, setLessonDetailData] = useState<
@@ -85,13 +85,8 @@ const LessonDetail = () => {
   };
 
   const handleEnableGenerateButton = async () => {
-    const today = new Date();
-    if (isFriday(today) || isWeekend(today)) {
-      await updateButtonGenerateLesson(params.uid, false);
-      setIsEnabledGenerateButton(true);
-    } else {
-      setIsEnabledGenerateButton(lessonDetailData?.hasGenerateLessons!);
-    }
+    const isEnabled = await getThereIsLessonOnThisWeek(params.uid);
+    setIsEnabledGenerateButton(!isEnabled);
   };
 
   const handleDeleteLesson = async () => {
@@ -207,7 +202,7 @@ const LessonDetail = () => {
 
               <InfoCard
                 type="info"
-                text="Lembre-se para gerar as próximas aulas, o botão será liberado sempre na sexta-feira!"
+                text="Lembre-se para gerar as próximas aulas, o botão será liberado se não tiver aula gerada para essa semana ou na próxima!"
               />
             </>
           )}

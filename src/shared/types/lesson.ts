@@ -20,7 +20,7 @@ export type LessonProps = {
   teacher?: string;
   uid?: string;
   date?: string;
-  hasGenerateLessons?: boolean;
+  hasGenerateLesson?: boolean;
   createdAt?: Date;
   title?: string;
 } & NamesProps;
