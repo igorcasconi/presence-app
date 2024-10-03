@@ -4,7 +4,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { Button, LessonCard, Loader } from "@/components";
-import { deleteOldLessons, getLessonList } from "@/firebase/database/lesson";
+import {
+  deleteOldLessons,
+  getLessonList,
+  updateButtonGenerateLesson,
+} from "@/firebase/database/lesson";
 
 import { LessonProps } from "@/shared/types/lesson";
 import { getModalitySelectList } from "@/firebase/database/modality";
@@ -12,6 +16,7 @@ import { getTeacherSelectList } from "@/firebase/database/user";
 import { deleteOldAttendance } from "@/firebase/database/attendance";
 import { DECREASE_LIMIT_PAGE } from "@/constants";
 import { WEEK_DAYS_PT } from "@/helpers/date";
+import { isFriday, isWeekend } from "date-fns";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -28,10 +33,16 @@ const Lesson = () => {
       const data = await getLessonList(lastKey, ITEMS_PER_PAGE);
       const modalitiesData = await getModalitySelectList();
       const teachersData = await getTeacherSelectList();
+      const today = new Date();
 
       if (data) {
         const keys = Object.keys(data);
+
         if (!!keys.length) {
+          keys.forEach(async (lesson) => {
+            if (isFriday(today) || isWeekend(today))
+              await updateButtonGenerateLesson(lesson!, false);
+          });
           const lastItemKey = keys[keys.length - DECREASE_LIMIT_PAGE];
 
           setLesson((prevLesson) => [
@@ -64,6 +75,7 @@ const Lesson = () => {
                     modality: modalityName,
                     teacher: teacherName,
                     translateWeekDays: translateWeekDays,
+                    hasGenerateLesson: !(isFriday(today) || isWeekend(today)),
                   };
                 else return {} as LessonProps;
               })
