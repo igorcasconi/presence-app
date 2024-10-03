@@ -12,7 +12,6 @@ import {
 import {
   createAttendanceList,
   deleteAttendanceWithLessonId,
-  getThereIsLessonOnThisWeek,
 } from "@/firebase/database/attendance";
 
 import { LessonProps } from "@/shared/types/lesson";
@@ -55,6 +54,7 @@ const LessonDetail = () => {
         translateWeekDays: translateWeekDays,
       } as LessonProps;
 
+      setIsEnabledGenerateButton(!lessonObject.hasGenerateLesson!);
       setLessonDetailData(lessonObject);
     } catch (error) {
       console.log(error);
@@ -84,11 +84,6 @@ const LessonDetail = () => {
     }
   };
 
-  const handleEnableGenerateButton = async () => {
-    const isEnabled = await getThereIsLessonOnThisWeek(params.uid);
-    setIsEnabledGenerateButton(!isEnabled);
-  };
-
   const handleDeleteLesson = async () => {
     try {
       await deleteLesson(params.uid);
@@ -102,7 +97,6 @@ const LessonDetail = () => {
 
   useEffect(() => {
     loadUserData();
-    handleEnableGenerateButton();
     //eslint-disable-next-line
   }, []);
 
@@ -202,7 +196,9 @@ const LessonDetail = () => {
 
               <InfoCard
                 type="info"
-                text="Lembre-se para gerar as próximas aulas, o botão será liberado se não tiver aula gerada para essa semana ou na próxima!"
+                text="Lembre-se para gerar as próximas aulas, o botão será liberado no 
+                final de semana (iniciando na sexta-feira), mas se não tiver aula gerada para 
+                a semana atual ainda vai ser possível gerar para os dias restantes dessa semana!"
               />
             </>
           )}
