@@ -71,7 +71,7 @@ const AttendanceDetails = () => {
         minutes: Number(splittedHour![1]),
       });
       const isMoreThanOneHourLeft =
-        differenceInHours(lessonDate, new Date()) > 1;
+        differenceInHours(lessonDate, new Date()) >= 1;
 
       setUserAlreadyPresent(Boolean(userPresence));
       setAttendanceDetailData(attendanceObject);
