@@ -13,7 +13,10 @@ import {
 import { LessonProps } from "@/shared/types/lesson";
 import { getModalitySelectList } from "@/firebase/database/modality";
 import { getTeacherSelectList } from "@/firebase/database/user";
-import { deleteOldAttendance } from "@/firebase/database/attendance";
+import {
+  deleteOldAttendance,
+  getThereIsLessonOnThisWeek,
+} from "@/firebase/database/attendance";
 import { DECREASE_LIMIT_PAGE } from "@/constants";
 import { WEEK_DAYS_PT } from "@/helpers/date";
 import { isFriday, isWeekend } from "date-fns";
@@ -40,7 +43,9 @@ const Lesson = () => {
 
         if (!!keys.length) {
           keys.forEach(async (lesson) => {
-            if (isFriday(today) || isWeekend(today))
+            const hasBeenLesson = await getThereIsLessonOnThisWeek(lesson!);
+
+            if ((isFriday(today) || isWeekend(today)) && !hasBeenLesson)
               await updateButtonGenerateLesson(lesson!, false);
           });
           const lastItemKey = keys[keys.length - DECREASE_LIMIT_PAGE];
@@ -75,7 +80,6 @@ const Lesson = () => {
                     modality: modalityName,
                     teacher: teacherName,
                     translateWeekDays: translateWeekDays,
-                    hasGenerateLesson: !(isFriday(today) || isWeekend(today)),
                   };
                 else return {} as LessonProps;
               })
