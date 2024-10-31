@@ -58,12 +58,7 @@ const Header = ({ children }: PropsWithChildren) => {
               className="flex items-center absolute right-0 mr-2"
               onClick={handleClickMenu}
             >
-              <Image
-                src="/logo-transparent.png"
-                alt="logo"
-                width={50}
-                height={50}
-              />
+              <Image src="/logo-menu.png" alt="logo" width={50} height={50} />
               <MenuIcon />
             </button>
           </div>

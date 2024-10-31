@@ -53,9 +53,9 @@ const SignUpView = () => {
     <div className="w-full h-full flex flex-col items-center md:max-w-[500px] m-auto px-4">
       <Image
         alt="logo-domovimento"
-        src="/logo-transparent.png"
-        width={150}
-        height={150}
+        src="/logo-login.png"
+        width={400}
+        height={400}
       />
 
       <h1 className="text-white text-center font-semibold mt-5 mb-10 text-[24px]">
