@@ -26,7 +26,7 @@ const Menu = ({ handleClickMenu, isOpen, handleLogout }: MenuProps) => {
       `}
     >
       <div className="flex justify-between items-center px-2">
-        <Image src="/logo-transparent.png" alt="logo" width={50} height={50} />
+        <Image src="/logo-menu.png" alt="logo" width={50} height={50} />
 
         <button onClick={handleClickMenu}>
           <CloseIcon />
