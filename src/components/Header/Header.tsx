@@ -22,6 +22,14 @@ const Header = ({ children }: PropsWithChildren) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const getTitlePage = () => {
+    if (pathname.includes("/admin")) return "Painel Professor";
+    else {
+      if (pathname.includes("workout")) return "Treinos";
+      else return "Aulas da semana";
+    }
+  };
+
   const handleLogout = async () => {
     try {
       await fetch("/api/logout");
@@ -48,11 +56,7 @@ const Header = ({ children }: PropsWithChildren) => {
               </button>
             )}
 
-            <p className="text-white font-medium text-lg">
-              {pathname.includes("/admin")
-                ? "Painel Professor"
-                : "Aulas da semana"}
-            </p>
+            <p className="text-white font-medium text-lg">{getTitlePage()}</p>
 
             <button
               className="flex items-center absolute right-0 mr-2"
