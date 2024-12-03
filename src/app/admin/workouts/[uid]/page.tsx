@@ -41,6 +41,10 @@ const WorkoutDetail = () => {
     }
   };
 
+  const handleEditWorkout = () => {
+    router.push(`/admin/workouts/edit/${params.uid}`);
+  };
+
   useEffect(() => {
     loadWorkouts();
     //eslint-disable-next-line
@@ -71,6 +75,13 @@ const WorkoutDetail = () => {
               className="!bg-red-500 h-8 max-w-24 ml-2"
               textStyle="text-xs"
               onClick={() => setModalVisible(true)}
+            />
+
+            <Button
+              text="Editar"
+              className="!bg-blue-500 h-8 max-w-24 ml-2"
+              textStyle="text-xs"
+              onClick={handleEditWorkout}
             />
           </div>
 
