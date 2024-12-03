@@ -8,6 +8,6 @@ export const workoutSchema = z.object({
   rest: z.string().optional(),
   repetition: z.string().optional(),
   observation: z.string().optional(),
-  url: z.string().url().optional(),
+  url: z.string().optional(),
   isActive: z.boolean().optional(),
 });

@@ -17,6 +17,7 @@ import {
   isWeekend,
   previousSunday,
   isThisWeek,
+  differenceInDays,
 } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
 
@@ -31,16 +32,13 @@ const database = getDatabase(app);
 
 export const createAttendanceList = async (lesson: LessonProps) => {
   let error;
-  let dateSunday = new Date(2024, 11, 1, 21, 0, 0);
-  const today = new Date(2024, 11, 1, 21, 0, 0);
+  let dateSunday = new Date();
+  const today = new Date();
 
   if (isSunday(today)) dateSunday = today;
   else if (isFriday(today) || isWeekend(today))
     dateSunday = getNextSunday(today);
   else dateSunday = previousSunday(today);
-
-  console.log(dateSunday, " sunday<<<<");
-  console.log(today, " today<<<<");
 
   try {
     if (!!lesson.weekDays?.length) {
@@ -48,7 +46,7 @@ export const createAttendanceList = async (lesson: LessonProps) => {
         const uid = uuidv4();
         const date = getDate(day, dateSunday);
 
-        if (isPast(date)) return;
+        if (differenceInDays(date, dateSunday) < 0) return;
 
         set(ref(database, "attendance/" + uid), {
           isActive: true,

@@ -56,7 +56,7 @@ const WorkoutDetail = () => {
         <>
           {isModalVisible && (
             <Modal
-              title="Excluir aula?"
+              title="Excluir treino?"
               message="Realmente deseja excluir este treino?"
               confirmButtonLabel="Excluir"
               cancelButtonLabel="Cancelar"

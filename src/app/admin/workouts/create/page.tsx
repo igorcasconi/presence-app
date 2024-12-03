@@ -35,6 +35,8 @@ const CreateWorkout = () => {
     resolver: zodResolver(workoutSchema),
   });
 
+  console.log(errors);
+
   const handleCreateWorkout = async (values: WorkoutFormProps) => {
     const uid = uuidv4();
 

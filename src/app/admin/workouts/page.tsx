@@ -13,7 +13,7 @@ import { optionsWorkoutType } from "@/constants/workout";
 const ITEMS_PER_PAGE = 10;
 
 const Lesson = () => {
-  const [lesson, setWorkout] = useState<WorkoutProps[]>([]);
+  const [workouts, setWorkout] = useState<WorkoutProps[]>([]);
   const [lastKey, setLastKey] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -100,7 +100,7 @@ const Lesson = () => {
       ) : (
         <div className="w-full mb-8">
           <ul>
-            {lesson.map((item) => (
+            {workouts.map((item) => (
               <WorkoutCard
                 key={item.uid}
                 data={item}
@@ -108,7 +108,7 @@ const Lesson = () => {
               />
             ))}
           </ul>
-          {hasMore && !isLoading && !!lesson.length && (
+          {hasMore && !isLoading && !!workouts.length && (
             <Button
               onClick={loadWorkoutList}
               text="Carregar mais aulas..."
