@@ -17,6 +17,7 @@ import {
   isWeekend,
   previousSunday,
   isThisWeek,
+  differenceInDays,
 } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
 
@@ -45,7 +46,7 @@ export const createAttendanceList = async (lesson: LessonProps) => {
         const uid = uuidv4();
         const date = getDate(day, dateSunday);
 
-        if (isPast(date)) return;
+        if (differenceInDays(date, dateSunday) < 0) return;
 
         set(ref(database, "attendance/" + uid), {
           isActive: true,
