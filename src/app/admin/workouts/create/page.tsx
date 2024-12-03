@@ -52,7 +52,7 @@ const CreateWorkout = () => {
     const { error } = await createWorkout(uid, payload);
 
     if (!!error) {
-      toast.error("Ocorreu um erro ao cadastrar a novo treino!");
+      toast.error("Ocorreu um erro ao cadastrar o novo treino!");
       return;
     }
 
@@ -64,7 +64,7 @@ const CreateWorkout = () => {
   return (
     <div className="w-full h-full flex flex-col items-center md:max-w-[500px] m-auto px-4">
       <h1 className="text-white text-center font-semibold mt-5 mb-10 text-[24px]">
-        Criar nova aula
+        Criar novo treino
       </h1>
 
       <form onSubmit={handleSubmit(handleCreateWorkout)} className="w-full">
