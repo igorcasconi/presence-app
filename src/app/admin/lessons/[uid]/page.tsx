@@ -73,8 +73,8 @@ const LessonDetail = () => {
 
     try {
       await createAttendanceList(lessonObject);
-      await updateButtonGenerateLesson(params.uid, true);
-      setIsEnabledGenerateButton(false);
+      // await updateButtonGenerateLesson(params.uid, true);
+      // setIsEnabledGenerateButton(false);
       toast.success("Novas aulas geradas com sucesso!");
     } catch (error) {
       console.log(error);

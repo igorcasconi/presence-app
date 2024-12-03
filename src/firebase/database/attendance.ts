@@ -31,13 +31,16 @@ const database = getDatabase(app);
 
 export const createAttendanceList = async (lesson: LessonProps) => {
   let error;
-  let dateSunday = new Date();
-  const today = new Date();
+  let dateSunday = new Date(2024, 11, 1, 21, 0, 0);
+  const today = new Date(2024, 11, 1, 21, 0, 0);
 
   if (isSunday(today)) dateSunday = today;
   else if (isFriday(today) || isWeekend(today))
     dateSunday = getNextSunday(today);
   else dateSunday = previousSunday(today);
+
+  console.log(dateSunday, " sunday<<<<");
+  console.log(today, " today<<<<");
 
   try {
     if (!!lesson.weekDays?.length) {
@@ -47,15 +50,15 @@ export const createAttendanceList = async (lesson: LessonProps) => {
 
         if (isPast(date)) return;
 
-        set(ref(database, "attendance/" + uid), {
-          isActive: true,
-          createdAt: new Date(),
-          modality: lesson.modality,
-          teacher: lesson.teacher,
-          time: lesson.time,
-          date: `${date}T00:00:00`,
-          lessonId: lesson.uid,
-        });
+        // set(ref(database, "attendance/" + uid), {
+        //   isActive: true,
+        //   createdAt: new Date(),
+        //   modality: lesson.modality,
+        //   teacher: lesson.teacher,
+        //   time: lesson.time,
+        //   date: `${date}T00:00:00`,
+        //   lessonId: lesson.uid,
+        // });
       });
     }
   } catch (err) {
