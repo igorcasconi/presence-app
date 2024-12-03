@@ -30,6 +30,7 @@ const LessonDetail = () => {
   const params = useParams<{ uid: string }>();
   const router = useRouter();
   const [isModalVisible, setModalVisible] = useState(false);
+  toast.success("Acesso develop!");
 
   const loadUserData = async () => {
     try {

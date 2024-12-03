@@ -50,15 +50,15 @@ export const createAttendanceList = async (lesson: LessonProps) => {
 
         if (isPast(date)) return;
 
-        // set(ref(database, "attendance/" + uid), {
-        //   isActive: true,
-        //   createdAt: new Date(),
-        //   modality: lesson.modality,
-        //   teacher: lesson.teacher,
-        //   time: lesson.time,
-        //   date: `${date}T00:00:00`,
-        //   lessonId: lesson.uid,
-        // });
+        set(ref(database, "attendance/" + uid), {
+          isActive: true,
+          createdAt: new Date(),
+          modality: lesson.modality,
+          teacher: lesson.teacher,
+          time: lesson.time,
+          date: `${date}T00:00:00`,
+          lessonId: lesson.uid,
+        });
       });
     }
   } catch (err) {
