@@ -77,73 +77,75 @@ const Workout = () => {
             startOpen={false}
             emptyText="Não há treinos cadastrados!"
           >
-            {getWorkoutByTypes(WORKOUT_TYPES.LOWER_LIMBS)?.map(
-              (workout, index) => (
+            {getWorkoutByTypes(WORKOUT_TYPES.LOWER_LIMBS)
+              ?.sort((a, b) => Number(a?.position) - Number(b?.position))
+              ?.map((workout, index) => (
                 <WorkoutCard
                   key={index}
                   data={workout}
                   onClick={() => handleOpenWorkout(workout?.uid)}
                 />
-              )
-            )}
+              ))}
           </Accordion>
           <Accordion
             title="Força"
             startOpen={false}
             emptyText="Não há treinos cadastrados!"
           >
-            {getWorkoutByTypes(WORKOUT_TYPES.FORCE)?.map((workout, index) => (
-              <WorkoutCard
-                key={index}
-                data={workout}
-                onClick={() => handleOpenWorkout(workout?.uid)}
-              />
-            ))}
+            {getWorkoutByTypes(WORKOUT_TYPES.FORCE)
+              ?.sort((a, b) => Number(a?.position) - Number(b?.position))
+              ?.map((workout, index) => (
+                <WorkoutCard
+                  key={index}
+                  data={workout}
+                  onClick={() => handleOpenWorkout(workout?.uid)}
+                />
+              ))}
           </Accordion>
           <Accordion
             title="Locomoção"
             startOpen={false}
             emptyText="Não há treinos cadastrados!"
           >
-            {getWorkoutByTypes(WORKOUT_TYPES.LOCOMOTION)?.map(
-              (workout, index) => (
+            {getWorkoutByTypes(WORKOUT_TYPES.LOCOMOTION)
+              ?.sort((a, b) => Number(a?.position) - Number(b?.position))
+              ?.map((workout, index) => (
                 <WorkoutCard
                   key={index}
                   data={workout}
                   onClick={() => handleOpenWorkout(workout?.uid)}
                 />
-              )
-            )}
+              ))}
           </Accordion>
           <Accordion
             title="Mobilidade"
             startOpen={false}
             emptyText="Não há treinos cadastrados!"
           >
-            {getWorkoutByTypes(WORKOUT_TYPES.MOBILITY)?.map(
-              (workout, index) => (
+            {getWorkoutByTypes(WORKOUT_TYPES.MOBILITY)
+              ?.sort((a, b) => Number(a?.position) - Number(b?.position))
+              ?.map((workout, index) => (
                 <WorkoutCard
                   key={index}
                   data={workout}
                   onClick={() => handleOpenWorkout(workout?.uid)}
                 />
-              )
-            )}
+              ))}
           </Accordion>
           <Accordion
             title="Parada de mão"
             startOpen={false}
             emptyText="Não há treinos cadastrados!"
           >
-            {getWorkoutByTypes(WORKOUT_TYPES.HANDSTAND)?.map(
-              (workout, index) => (
+            {getWorkoutByTypes(WORKOUT_TYPES.HANDSTAND)
+              ?.sort((a, b) => Number(a?.position) - Number(b?.position))
+              ?.map((workout, index) => (
                 <WorkoutCard
                   key={index}
                   data={workout}
                   onClick={() => handleOpenWorkout(workout?.uid)}
                 />
-              )
-            )}
+              ))}
           </Accordion>
         </div>
       )}
