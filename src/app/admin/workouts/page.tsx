@@ -46,7 +46,7 @@ const Lesson = () => {
                   return {
                     ...data[workout],
                     uid: workout,
-                    type: typeName,
+                    typeName: typeName,
                   };
                 else return {} as WorkoutProps;
               })

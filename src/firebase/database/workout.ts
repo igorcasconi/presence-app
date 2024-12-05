@@ -31,6 +31,7 @@ export const createWorkout = async (uid: string, workout: WorkoutFormProps) => {
       repetition: workout.repetition,
       type: workout.type,
       url: workout.url,
+      position: workout.position,
     });
   } catch (err) {
     console.log("error", err);

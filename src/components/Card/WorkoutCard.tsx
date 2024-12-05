@@ -18,6 +18,7 @@ const WorkoutCard = ({ data, onClick }: CardProps<WorkoutProps>) => {
         <div className="flex justify-between">
           <div>
             <p className="text-white text-sm mt-1">
+              {!!data?.position ? `${data.position} - ` : ""}{" "}
               {
                 optionsWorkoutType.find(
                   (workoutItem) => workoutItem.id === data?.type

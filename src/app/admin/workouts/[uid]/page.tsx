@@ -157,6 +157,17 @@ const WorkoutDetail = () => {
           </div>
 
           <div className="w-full mb-[-2px] justify-center">
+            <h2 className="text-gray-300 text-md">
+              Posição de exibição na Lista
+            </h2>
+          </div>
+          <div className="w-full mb-4">
+            <h3 className="text-white text-xl">
+              {workoutDetailData?.position || "-"}
+            </h3>
+          </div>
+
+          <div className="w-full mb-[-2px] justify-center">
             <h2 className="text-gray-300 text-md">Observação</h2>
           </div>
           <div className="w-full mb-4">

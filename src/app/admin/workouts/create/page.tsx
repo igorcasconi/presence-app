@@ -31,6 +31,7 @@ const CreateWorkout = () => {
       observation: "",
       url: "",
       isActive: true,
+      position: "",
     },
     resolver: zodResolver(workoutSchema),
   });
@@ -48,6 +49,7 @@ const CreateWorkout = () => {
       observation: values.observation,
       url: values.url,
       isActive: values.isActive,
+      position: values.position,
     } as WorkoutFormProps;
     const { error } = await createWorkout(uid, payload);
 
@@ -148,8 +150,22 @@ const CreateWorkout = () => {
               placeholder="https://www.youtube.com/...."
               register={register}
               name="url"
-              error={!!errors?.rest?.message}
-              message={errors.rest?.message}
+              error={!!errors?.url?.message}
+              message={errors.url?.message}
+            />
+          </div>
+        </div>
+
+        <div className="mb-5 w-full">
+          <div className="mb-5 w-full">
+            <Input
+              label="Posição de exibição na lista"
+              placeholder="ex.: 1"
+              register={register}
+              name="position"
+              type="number"
+              error={!!errors?.position?.message}
+              message={errors.position?.message}
             />
           </div>
         </div>
