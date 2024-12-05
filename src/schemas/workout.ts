@@ -10,4 +10,5 @@ export const workoutSchema = z.object({
   observation: z.string().optional(),
   url: z.string().optional(),
   isActive: z.boolean().optional(),
+  position: z.string().optional(),
 });

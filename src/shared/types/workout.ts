@@ -9,6 +9,7 @@ export type WorkoutFormProps = {
   url?: string;
   uid?: string;
   type?: string;
+  position?: number | string;
 };
 
 export type WorkoutProps = {
@@ -23,4 +24,5 @@ export type WorkoutProps = {
   url?: string;
   type?: string;
   createdAt?: Date;
+  position?: number | string;
 };

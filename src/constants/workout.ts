@@ -1,18 +1,35 @@
+export enum WORKOUT_TYPES {
+  UPPER_LIMBS = "upperLimbs",
+  LOWER_LIMBS = "lowerLimbs",
+  FORCE = "force",
+  MOBILITY = "mobility",
+  LOCOMOTION = "locomotion",
+  HANDSTAND = "handstand",
+}
+
 export const optionsWorkoutType = [
   {
-    id: "upperLimbs",
+    id: WORKOUT_TYPES.UPPER_LIMBS,
     label: "Membros superiores",
   },
   {
-    id: "lowerLimbs",
+    id: WORKOUT_TYPES.LOWER_LIMBS,
     label: "Membros inferiores",
   },
   {
-    id: "bruteForce",
-    label: "Força bruta",
+    id: WORKOUT_TYPES.FORCE,
+    label: "Força",
   },
   {
-    id: "movement",
-    label: "Movimentos",
+    id: WORKOUT_TYPES.LOCOMOTION,
+    label: "Locomoção",
+  },
+  {
+    id: WORKOUT_TYPES.MOBILITY,
+    label: "Mobilidade",
+  },
+  {
+    id: WORKOUT_TYPES.HANDSTAND,
+    label: "Parada de mão",
   },
 ];
