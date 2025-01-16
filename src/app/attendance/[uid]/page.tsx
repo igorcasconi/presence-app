@@ -253,7 +253,7 @@ const AttendanceDetails = () => {
             {isPastAttendance && (
               <InfoCard
                 type="warning"
-                text=" A data dessa aula já ocorreu ou falta apenas 1 hora para esta
+                text=" A data dessa aula já ocorreu ou falta apenas 30 minutos para esta
                   aula começar. Não é possível mais confirmar presença!"
               />
             )}
@@ -277,7 +277,7 @@ const AttendanceDetails = () => {
           {!isPastAttendance && (
             <InfoCard
               text="Lembre-se, a confirmação da sua presença nesta aula poderá ser
-                feita até com 1 hora de antecedência. Faltando menos de 1 hora e
+                feita até com 30 minutos de antecedência. Faltando menos de 30 minutos e
                 caso não compareça ou ainda gostaria de participar da aula,
                 entre em contato com o Professor via WhatsApp"
               type="info"
