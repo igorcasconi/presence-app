@@ -16,7 +16,7 @@ import {
 import { getModalityData } from "@/firebase/database/modality";
 import { getUserData } from "@/firebase/database/user";
 import { AttendanceProps, AttendanceUserList } from "@/shared/types/attendance";
-import { differenceInHours, format, set } from "date-fns";
+import { differenceInMinutes, format, set } from "date-fns";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -70,13 +70,13 @@ const AttendanceDetails = () => {
         hours: Number(splittedHour![0]),
         minutes: Number(splittedHour![1]),
       });
-      const isMoreThanOneHourLeft =
-        differenceInHours(lessonDate, new Date()) >= 1;
+      const isMoreThanThirtyMinutesLeft =
+        differenceInMinutes(lessonDate, new Date()) >= 30;
 
       setUserAlreadyPresent(Boolean(userPresence));
       setAttendanceDetailData(attendanceObject);
       setAttendanceListData(listUser);
-      setIsPastAttendance(!isMoreThanOneHourLeft);
+      setIsPastAttendance(!isMoreThanThirtyMinutesLeft);
     } catch (error) {
       console.log(error);
     } finally {

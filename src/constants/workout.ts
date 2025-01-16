@@ -1,7 +1,6 @@
 export enum WORKOUT_TYPES {
   UPPER_LIMBS = "upperLimbs",
   LOWER_LIMBS = "lowerLimbs",
-  FORCE = "force",
   MOBILITY = "mobility",
   LOCOMOTION = "locomotion",
   HANDSTAND = "handstand",
@@ -15,10 +14,6 @@ export const optionsWorkoutType = [
   {
     id: WORKOUT_TYPES.LOWER_LIMBS,
     label: "Membros inferiores",
-  },
-  {
-    id: WORKOUT_TYPES.FORCE,
-    label: "Força",
   },
   {
     id: WORKOUT_TYPES.LOCOMOTION,

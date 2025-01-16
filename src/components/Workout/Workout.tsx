@@ -88,21 +88,6 @@ const Workout = () => {
               ))}
           </Accordion>
           <Accordion
-            title="Força"
-            startOpen={false}
-            emptyText="Não há treinos cadastrados!"
-          >
-            {getWorkoutByTypes(WORKOUT_TYPES.FORCE)
-              ?.sort((a, b) => Number(a?.position) - Number(b?.position))
-              ?.map((workout, index) => (
-                <WorkoutCard
-                  key={index}
-                  data={workout}
-                  onClick={() => handleOpenWorkout(workout?.uid)}
-                />
-              ))}
-          </Accordion>
-          <Accordion
             title="Locomoção"
             startOpen={false}
             emptyText="Não há treinos cadastrados!"
