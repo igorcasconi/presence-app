@@ -22,6 +22,7 @@ const database = getDatabase(app);
 
 export const createLesson = async (uid: string, lesson: LessonFormProps) => {
   let error;
+
   try {
     set(ref(database, "lessons/" + uid), {
       isActive: lesson.isActive,
@@ -30,6 +31,9 @@ export const createLesson = async (uid: string, lesson: LessonFormProps) => {
       teacher: lesson.teacher,
       createdAt: new Date(),
       hasGenerateLesson: false,
+      ...(!!lesson?.userLimit && {
+        userLimit: lesson.userLimit,
+      }),
       ...(!!lesson?.weekDays?.length && { weekDays: lesson.weekDays }),
       ...(!!lesson?.date && { date: lesson.date }),
       ...(!!lesson?.title && { title: lesson.title }),
@@ -47,6 +51,9 @@ export const createLesson = async (uid: string, lesson: LessonFormProps) => {
         lessonId: uid,
         isSingleLesson: true,
         title: lesson.title,
+        ...(!!lesson?.userLimit && {
+          userLimit: lesson.userLimit,
+        }),
       });
     }
   } catch (err) {

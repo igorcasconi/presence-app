@@ -14,6 +14,7 @@ import { getTeacherSelectList } from "@/firebase/database/user";
 
 import { LessonFormProps, OptionProp } from "@/shared/types/lesson";
 import { lessonSchema } from "@/schemas/lesson";
+import { useAuth } from "@/contexts/AuthContext";
 
 const CreateLesson = () => {
   const router = useRouter();
@@ -21,6 +22,7 @@ const CreateLesson = () => {
     []
   );
   const [teacherOptionList, setTeacherOptionList] = useState<OptionProp[]>([]);
+  const { isUserLimitOnLesson } = useAuth();
 
   const {
     register,
@@ -33,6 +35,7 @@ const CreateLesson = () => {
       time: "",
       isSingleLesson: false,
       isActive: true,
+      userLimit: "10",
     },
     resolver: zodResolver(lessonSchema),
   });
@@ -48,6 +51,7 @@ const CreateLesson = () => {
       isActive: true,
       teacher: values.teacher,
       isSingleLesson: values.isSingleLesson,
+      ...(!!values.userLimit && { userLimit: values.userLimit }),
       ...(!!values.weekDays?.length && { weekDays: values.weekDays }),
       ...(!!values.date && { date: `${values.date}T00:00:00` }),
       ...(!!values.title && { title: values.title }),
@@ -194,6 +198,19 @@ const CreateLesson = () => {
             </>
           )}
         </div>
+
+        {isUserLimitOnLesson && (
+          <div className="mb-5 w-full">
+            <Input
+              label="Quantidade limite de aluno"
+              placeholder="10"
+              register={register}
+              name="userLimit"
+              error={!!errors?.userLimit?.message}
+              message={errors.userLimit?.message}
+            />
+          </div>
+        )}
 
         <Button
           text="Criar aula"

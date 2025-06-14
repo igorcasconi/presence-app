@@ -8,6 +8,10 @@ export const lessonSchema = z
     modality: z.string().min(1, { message: requiredFieldMessage }),
     weekDays: z.array(z.string()).optional(),
     isActive: z.boolean().optional(),
+    userLimit:
+      process.env.NEXT_PUBLIC_ALLOW_MAX_USERS_PER_LESSON === "true"
+        ? z.string({ required_error: requiredFieldMessage })
+        : z.string().optional(),
     teacher: z.string().min(1, { message: requiredFieldMessage }),
     uid: z.string().optional(),
     date: z.string().optional(),

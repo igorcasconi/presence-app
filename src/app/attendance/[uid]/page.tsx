@@ -18,7 +18,7 @@ import { getUserData } from "@/firebase/database/user";
 import { AttendanceProps, AttendanceUserList } from "@/shared/types/attendance";
 import { differenceInMinutes, format, set } from "date-fns";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 
 const AttendanceDetails = () => {
@@ -28,7 +28,7 @@ const AttendanceDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isPastAttendance, setIsPastAttendance] = useState(false);
   const params = useParams<{ uid: string }>();
-  const { userData } = useAuth();
+  const { userData, isUserLimitOnLesson } = useAuth();
   const [isModalVisible, setModalVisible] = useState(false);
   const [userAlreadyPresent, setUserAlreadyPresent] = useState(false);
   const [attendanceListData, setAttendanceListData] = useState<
@@ -129,6 +129,15 @@ const AttendanceDetails = () => {
     }
   };
 
+  const isUserLimitReached = useMemo(() => {
+    if (!attendanceDetailData?.userLimit) return false;
+
+    return (
+      Number(attendanceListData?.length ?? 0) ===
+      Number(attendanceDetailData?.userLimit)
+    );
+  }, [attendanceListData?.length]);
+
   useEffect(() => {
     loadUserData();
     //eslint-disable-next-line
@@ -227,7 +236,8 @@ const AttendanceDetails = () => {
             {userData?.isActive &&
               userData?.isStudent &&
               !isPastAttendance &&
-              attendanceDetailData?.isActive && (
+              attendanceDetailData?.isActive &&
+              (!isUserLimitReached || userAlreadyPresent) && (
                 <Button
                   text={
                     userAlreadyPresent
@@ -264,6 +274,9 @@ const AttendanceDetails = () => {
               title="Lista de presença"
               startOpen={true}
               emptyText="Não há presença para essa aula!"
+              {...(isUserLimitOnLesson && {
+                rightText: `${attendanceListData.length}/${attendanceDetailData?.userLimit}`,
+              })}
             >
               {attendanceListData?.map((user, index) => (
                 <div key={`${user.uid}-${index}`} className="flex items-center">
@@ -273,6 +286,13 @@ const AttendanceDetails = () => {
               ))}
             </Accordion>
           </div>
+
+          {isUserLimitReached && (
+            <InfoCard
+              text="O limite de pessoas nessa aula foi atingido!"
+              type="warning"
+            />
+          )}
 
           {!isPastAttendance && (
             <InfoCard

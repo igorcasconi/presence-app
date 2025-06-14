@@ -12,6 +12,7 @@ interface AuthContextProps {
   userFirebase: User | null;
   userData?: UserProps | null;
   loading: boolean;
+  isUserLimitOnLesson?: boolean;
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(
@@ -24,6 +25,8 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const [userFirebase, setUserFirebase] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState<UserProps>();
+  const isUserLimitOnLesson =
+    process.env.NEXT_PUBLIC_ALLOW_MAX_USERS_PER_LESSON === "true";
 
   const getUserDatabase = async (uid: string) => {
     const userDatabase = await getUserData(uid);
@@ -54,7 +57,9 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   return (
-    <AuthContext.Provider value={{ userFirebase, userData, loading }}>
+    <AuthContext.Provider
+      value={{ userFirebase, userData, loading, isUserLimitOnLesson }}
+    >
       {children}
     </AuthContext.Provider>
   );
