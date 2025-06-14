@@ -9,6 +9,7 @@ export type AttendanceProps = {
   date: string;
   attendanceList: Array<string>;
   lessonId: string;
+  userLimit: string | number;
   isSingleLesson?: boolean;
   title?: string;
   uid?: string;

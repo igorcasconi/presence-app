@@ -19,6 +19,7 @@ import { getModalityData } from "@/firebase/database/modality";
 import { getUserData } from "@/firebase/database/user";
 import { WEEK_DAYS_PT } from "@/helpers/date";
 import { toast } from "react-toastify";
+import { useAuth } from "@/contexts/AuthContext";
 
 const LessonDetail = () => {
   const [lessonDetailData, setLessonDetailData] = useState<
@@ -30,6 +31,7 @@ const LessonDetail = () => {
   const params = useParams<{ uid: string }>();
   const router = useRouter();
   const [isModalVisible, setModalVisible] = useState(false);
+  const { isUserLimitOnLesson } = useAuth();
 
   const loadUserData = async () => {
     try {
@@ -167,6 +169,21 @@ const LessonDetail = () => {
           <div className="w-full mb-4">
             <h3 className="text-white text-xl">{lessonDetailData?.time}</h3>
           </div>
+
+          {isUserLimitOnLesson && (
+            <>
+              <div className="w-full mb-[-2px] justify-center">
+                <h2 className="text-gray-300 text-md">
+                  Quantidade limite de aluno
+                </h2>
+              </div>
+              <div className="w-full mb-4">
+                <h3 className="text-white text-xl">
+                  {lessonDetailData?.userLimit}
+                </h3>
+              </div>
+            </>
+          )}
 
           {!!lessonDetailData?.weekDays?.length && (
             <>

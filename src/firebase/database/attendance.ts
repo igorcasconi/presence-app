@@ -56,6 +56,7 @@ export const createAttendanceList = async (lesson: LessonProps) => {
           time: lesson.time,
           date: `${date}T00:00:00`,
           lessonId: lesson.uid,
+          userLimit: lesson.userLimit,
         });
       });
     }

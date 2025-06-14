@@ -7,6 +7,7 @@ interface AccordionProps extends PropsWithChildren {
   title: string;
   startOpen?: boolean;
   emptyText?: string;
+  rightText?: string;
 }
 
 const Accordion = ({
@@ -14,6 +15,7 @@ const Accordion = ({
   children,
   startOpen = false,
   emptyText = "Não há aulas para esse dia",
+  rightText,
 }: AccordionProps) => {
   const [openAccordion, setOpenAccordion] = useState(startOpen);
   return (
@@ -32,7 +34,17 @@ const Accordion = ({
           <span className="flex text-lg font-regular text-gray-400">
             {title}
           </span>
-          <ArrowDownIcon className={openAccordion ? "rotate-180" : ""} />
+
+          <div className="flex flex-row">
+            {!!rightText && (
+              <div className="mr-2">
+                <span className="flex text-lg font-regular text-gray-400">
+                  {rightText}
+                </span>
+              </div>
+            )}
+            <ArrowDownIcon className={openAccordion ? "rotate-180" : ""} />
+          </div>
         </button>
         {openAccordion && (
           <div id="answer1" className="px-4 pt-1 pb-6">

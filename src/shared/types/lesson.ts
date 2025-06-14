@@ -3,6 +3,7 @@ export type LessonFormProps = {
   modality: string;
   teacher: string;
   isActive: boolean;
+  userLimit?: string | number;
   uid?: string;
   isSingleLesson?: boolean;
   weekDays?: string[];
@@ -23,6 +24,7 @@ export type LessonProps = {
   hasGenerateLesson?: boolean;
   createdAt?: Date;
   title?: string;
+  userLimit?: string | number;
 } & NamesProps;
 
 export type OptionProp = {
