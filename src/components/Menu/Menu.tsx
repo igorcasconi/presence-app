@@ -40,13 +40,15 @@ const Menu = ({ handleClickMenu, isOpen, handleLogout }: MenuProps) => {
             href="/"
             isActive={pathname === "/"}
           />
-          <MenuItem
-            text="Treinos"
-            href="/workout"
-            isActive={
-              pathname.includes("/workout") && !pathname.includes("admin")
-            }
-          />
+          {Boolean(process.env.NEXT_PUBLIC_ALLOW_WORKOUT) && (
+            <MenuItem
+              text="Treinos"
+              href="/workout"
+              isActive={
+                pathname.includes("/workout") && !pathname.includes("admin")
+              }
+            />
+          )}
         </ul>
         {(userData?.isAdmin || userData?.isTeacher) && (
           <>
@@ -71,11 +73,13 @@ const Menu = ({ handleClickMenu, isOpen, handleLogout }: MenuProps) => {
                   href="/admin/modalities"
                   isActive={pathname.includes("/admin/modalities")}
                 />
-                <MenuItem
-                  text="Treinos"
-                  href="/admin/workouts"
-                  isActive={pathname.includes("/admin/workouts")}
-                />
+                {Boolean(process.env.NEXT_PUBLIC_ALLOW_WORKOUT) && (
+                  <MenuItem
+                    text="Treinos"
+                    href="/admin/workouts"
+                    isActive={pathname.includes("/admin/workouts")}
+                  />
+                )}
               </ul>
             </div>
           </>

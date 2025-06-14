@@ -44,8 +44,8 @@ const SignUpView = () => {
   return (
     <div className="w-full h-full flex flex-col items-center md:max-w-[500px] m-auto px-4">
       <Image
-        alt="logo-domovimento"
-        src="/logo-transparent.png"
+        alt="logo-luayoga"
+        src="/logo-login.png"
         width={150}
         height={150}
       />

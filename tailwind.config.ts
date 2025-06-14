@@ -26,7 +26,8 @@ const config: Config = {
           700: "#686868",
         },
         primary: "#1D1D1D",
-        secondary: "#CC6726",
+        secondary: "#62C3C9",
+        terciary: "#E56CA2",
         negative: {
           100: "#c25848",
           200: "#bf3e2a",
