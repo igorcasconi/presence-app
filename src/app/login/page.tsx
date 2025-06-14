@@ -54,8 +54,8 @@ const SignUpView = () => {
       <Image
         alt="logo-domovimento"
         src="/logo-login.png"
-        width={400}
-        height={400}
+        width={250}
+        height={250}
       />
 
       <h1 className="text-white text-center font-semibold mt-5 mb-10 text-[24px]">
