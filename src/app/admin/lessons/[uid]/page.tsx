@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 import { Button, InfoCard, Loader, Modal } from "@/components";
 import {
@@ -18,8 +19,6 @@ import { LessonProps } from "@/shared/types/lesson";
 import { getModalityData } from "@/firebase/database/modality";
 import { getUserData } from "@/firebase/database/user";
 import { WEEK_DAYS_PT } from "@/helpers/date";
-import { toast } from "react-toastify";
-import { useAuth } from "@/contexts/AuthContext";
 
 const LessonDetail = () => {
   const [lessonDetailData, setLessonDetailData] = useState<
@@ -31,7 +30,6 @@ const LessonDetail = () => {
   const params = useParams<{ uid: string }>();
   const router = useRouter();
   const [isModalVisible, setModalVisible] = useState(false);
-  const { isUserLimitOnLesson } = useAuth();
 
   const loadUserData = async () => {
     try {
@@ -170,7 +168,7 @@ const LessonDetail = () => {
             <h3 className="text-white text-xl">{lessonDetailData?.time}</h3>
           </div>
 
-          {isUserLimitOnLesson && (
+          {!!lessonDetailData?.userLimit && (
             <>
               <div className="w-full mb-[-2px] justify-center">
                 <h2 className="text-gray-300 text-md">

@@ -22,6 +22,7 @@ const CreateLesson = () => {
     []
   );
   const [teacherOptionList, setTeacherOptionList] = useState<OptionProp[]>([]);
+
   const { isUserLimitOnLesson } = useAuth();
 
   const {
@@ -34,6 +35,7 @@ const CreateLesson = () => {
     defaultValues: {
       time: "",
       isSingleLesson: false,
+      useUserLimit: isUserLimitOnLesson ?? false,
       isActive: true,
       userLimit: "10",
     },
@@ -41,6 +43,7 @@ const CreateLesson = () => {
   });
 
   const isSingleLesson = watch("isSingleLesson");
+  const useUserLimit = watch("useUserLimit");
 
   const handleCreateLesson = async (values: LessonFormProps) => {
     const uid = uuidv4();
@@ -51,7 +54,8 @@ const CreateLesson = () => {
       isActive: true,
       teacher: values.teacher,
       isSingleLesson: values.isSingleLesson,
-      ...(!!values.userLimit && { userLimit: values.userLimit }),
+      ...(!!values.userLimit &&
+        useUserLimit && { userLimit: values.userLimit }),
       ...(!!values.weekDays?.length && { weekDays: values.weekDays }),
       ...(!!values.date && { date: `${values.date}T00:00:00` }),
       ...(!!values.title && { title: values.title }),
@@ -200,15 +204,30 @@ const CreateLesson = () => {
         </div>
 
         {isUserLimitOnLesson && (
-          <div className="mb-5 w-full">
-            <Input
-              label="Quantidade limite de aluno"
-              placeholder="10"
-              register={register}
-              name="userLimit"
-              error={!!errors?.userLimit?.message}
-              message={errors.userLimit?.message}
-            />
+          <div>
+            <div className="w-full mb-2 flex">
+              <Switch
+                checked={useUserLimit!}
+                onChange={(event) =>
+                  setValue("useUserLimit", event.target.checked)
+                }
+              />
+              <p className="text-gray-500 text-md ml-2">
+                Limite de aluno nessa aula?
+              </p>
+            </div>
+            {useUserLimit && (
+              <div className="mb-5 w-full">
+                <Input
+                  label="Quantidade limite de aluno"
+                  placeholder="10"
+                  register={register}
+                  name="userLimit"
+                  error={!!errors?.userLimit?.message}
+                  message={errors.userLimit?.message}
+                />
+              </div>
+            )}
           </div>
         )}
 
