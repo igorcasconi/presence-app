@@ -4,6 +4,7 @@ export type LessonFormProps = {
   teacher: string;
   isActive: boolean;
   userLimit?: string | number;
+  useUserLimit?: boolean;
   uid?: string;
   isSingleLesson?: boolean;
   weekDays?: string[];
