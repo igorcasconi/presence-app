@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
-import { Button, InfoCard, Loader, Modal } from "@/components";
+import { Button, InfoCard, Loader, ModalAlert } from "@/components";
 import {
   deleteLesson,
   getLessonData,
@@ -109,7 +109,7 @@ const LessonDetail = () => {
       ) : (
         <>
           {isModalVisible && (
-            <Modal
+            <ModalAlert
               title="Excluir aula?"
               message="Realmente deseja excluir esta aula? Ao confirmar as aulas e presenças dessa semana serão apagadas!"
               confirmButtonLabel="Excluir"

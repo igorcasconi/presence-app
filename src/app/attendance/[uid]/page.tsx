@@ -4,7 +4,7 @@ import {
   Button,
   CheckIcon,
   Loader,
-  Modal,
+  ModalAlert,
   InfoCard,
 } from "@/components";
 import { useAuth } from "@/contexts/AuthContext";
@@ -152,7 +152,7 @@ const AttendanceDetails = () => {
       ) : (
         <>
           {isModalVisible && (
-            <Modal
+            <ModalAlert
               title={`${
                 !attendanceDetailData?.isActive ? "Ativar" : "Cancelar"
               } aula?`}

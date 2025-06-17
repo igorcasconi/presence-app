@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
-import { Button, Loader, Modal } from "@/components";
+import { Button, Loader, ModalAlert } from "@/components";
 import { deleteWorkout, getWorkoutData } from "@/firebase/database/workout";
 
 import { WorkoutProps } from "@/shared/types/workout";
@@ -59,7 +59,7 @@ const WorkoutDetail = () => {
       ) : (
         <>
           {isModalVisible && (
-            <Modal
+            <ModalAlert
               title="Excluir treino?"
               message="Realmente deseja excluir este treino?"
               confirmButtonLabel="Excluir"

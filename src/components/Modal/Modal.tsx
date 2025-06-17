@@ -1,27 +1,14 @@
 "use client";
 
-import { Button } from "../Button";
+import { PropsWithChildren } from "react";
 import { CloseIcon } from "../icons";
 
-interface ModalProps {
+export interface ModalProps extends PropsWithChildren {
   title: string;
-  message: string;
-  confirmButtonLabel?: string;
-  cancelButtonLabel?: string;
   onCloseModal?: () => void;
-  onConfirmButton?: () => void;
-  onCancelButton?: () => void;
 }
 
-const Modal = ({
-  onCloseModal,
-  title,
-  message,
-  confirmButtonLabel,
-  cancelButtonLabel,
-  onConfirmButton,
-  onCancelButton,
-}: ModalProps) => {
+const Modal = ({ onCloseModal, title, children }: ModalProps) => {
   return (
     <div
       id="default-modal"
@@ -45,34 +32,7 @@ const Modal = ({
               <span className="sr-only">Close modal</span>
             </button>
           </div>
-
-          <div className="p-4 md:p-5 space-y-4">
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              {message}
-            </p>
-          </div>
-
-          <div className="flex items-center justify-start p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-            {confirmButtonLabel && (
-              <Button
-                type="button"
-                text={confirmButtonLabel}
-                onClick={onConfirmButton}
-                className="bg-secondary w-auto mr-4"
-                textStyle="text-sm"
-              />
-            )}
-
-            {cancelButtonLabel && (
-              <Button
-                type="button"
-                text={cancelButtonLabel}
-                onClick={onCancelButton}
-                className="bg-slate-700 w-auto"
-                textStyle="text-sm"
-              />
-            )}
-          </div>
+          {children}
         </div>
       </div>
     </div>
