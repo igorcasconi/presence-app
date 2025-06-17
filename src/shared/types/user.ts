@@ -18,4 +18,9 @@ export type UserProps = {
   isActive?: boolean;
   modalities?: string[];
   uid?: string;
+  registrationDate?: string;
+};
+
+export type UserRegistrationDateProps = {
+  registrationDate: string;
 };
