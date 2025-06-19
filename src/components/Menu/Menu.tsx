@@ -80,6 +80,23 @@ const Menu = ({ handleClickMenu, isOpen, handleLogout }: MenuProps) => {
             </div>
           </>
         )}
+
+        <>
+          <p className="text-gray-500 font-medium text-md mt-4">
+            Menu do Usuário
+          </p>
+
+          <div className="flex flex-col">
+            <ul>
+              <MenuItem
+                text="Editar seu usuário"
+                href="/edit-user"
+                isActive={pathname.includes("/edit-user")}
+              />
+            </ul>
+          </div>
+        </>
+
         <div className="opacity-100 mt-8">
           <p className="text-gray-500 font-medium text-md">
             Usuário {userData?.name}
