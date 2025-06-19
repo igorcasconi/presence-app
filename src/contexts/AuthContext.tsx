@@ -1,6 +1,13 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { onAuthStateChanged, getAuth, User } from "firebase/auth";
 import { app } from "@/firebase/config";
 import { UserProps } from "@/shared/types/user";
@@ -11,6 +18,7 @@ const auth = getAuth(app);
 interface AuthContextProps {
   userFirebase: User | null;
   userData?: UserProps | null;
+  setUserData: Dispatch<SetStateAction<UserProps | undefined>>;
   loading: boolean;
   isUserLimitOnLesson?: boolean;
 }
@@ -58,7 +66,13 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <AuthContext.Provider
-      value={{ userFirebase, userData, loading, isUserLimitOnLesson }}
+      value={{
+        userFirebase,
+        userData,
+        loading,
+        isUserLimitOnLesson,
+        setUserData,
+      }}
     >
       {children}
     </AuthContext.Provider>
