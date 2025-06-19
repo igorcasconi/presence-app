@@ -28,3 +28,7 @@ export const userRegistrationDateSchema = z.object({
 export const forgotPasswordSchema = z.object({
   email: z.string().email(),
 });
+
+export const editUserSchema = z.object({
+  name: z.string(),
+});

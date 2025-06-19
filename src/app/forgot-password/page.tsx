@@ -12,7 +12,7 @@ import { ForgotPasswordFormProps } from "@/shared/types/user";
 import { forgotPasswordSchema } from "@/schemas/user";
 import { forgotPasswordUser } from "@/firebase/auth/forgotpassword";
 
-const SignUpView = () => {
+const ForgotPasswordView = () => {
   const router = useRouter();
   const [isSuccessSentEmail, setIsSuccessSentEmail] = useState(false);
 
@@ -115,4 +115,4 @@ const SignUpView = () => {
   );
 };
 
-export default SignUpView;
+export default ForgotPasswordView;
