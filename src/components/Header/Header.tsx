@@ -8,7 +8,7 @@ import { ArrowBackIcon, MenuIcon } from "../icons";
 import { Menu } from "../Menu";
 import { logout } from "@/firebase/auth/signin";
 
-const notShowHeader = ["/login", "/sign-up"];
+const notShowHeader = ["/login", "/sign-up", "/forgot-password"];
 const Header = ({ children }: PropsWithChildren) => {
   const router = useRouter();
   const pathname = usePathname();

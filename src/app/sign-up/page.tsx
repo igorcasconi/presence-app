@@ -22,6 +22,7 @@ const SignUpView = () => {
   } = useForm<SignUpFormProps>({
     defaultValues: {
       name: "",
+      lastname: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -36,7 +37,7 @@ const SignUpView = () => {
       toast.error("Ocorreu um erro ao cadastrar o seu usuário!");
     }
 
-    await updateUserData(values.name);
+    await updateUserData(`${values.name} ${values.lastname}`);
     toast.success("Seu usuário foi cadastrado com sucesso!");
     return router.push("/login");
   };
@@ -63,6 +64,17 @@ const SignUpView = () => {
             name="name"
             error={!!errors?.name?.message}
             message={errors.name?.message}
+          />
+        </div>
+
+        <div className="mb-5 w-full">
+          <Input
+            label="Primeiro sobrenome"
+            placeholder="Primeiro sobrenome"
+            register={register}
+            name="lastname"
+            error={!!errors?.lastname?.message}
+            message={errors.lastname?.message}
           />
         </div>
 
