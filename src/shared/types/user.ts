@@ -19,3 +19,7 @@ export type UserProps = {
   modalities?: string[];
   uid?: string;
 };
+
+export type ForgotPasswordFormProps = {
+  email: string;
+};

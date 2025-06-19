@@ -7,7 +7,7 @@ import {
 import { serverConfig } from "../config";
 import { firebaseConfig } from "@/firebase/config";
 
-const PUBLIC_PATHS = ["/sign-up", "/login"];
+const PUBLIC_PATHS = ["/sign-up", "/login", "/forgot-password"];
 
 export function middleware(request: NextRequest) {
   return authMiddleware(request, {
