@@ -1,4 +1,3 @@
-import { cookies } from "next/headers";
 import { app } from "../config";
 import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 

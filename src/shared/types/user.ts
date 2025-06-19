@@ -24,3 +24,7 @@ export type UserProps = {
 export type UserRegistrationDateProps = {
   registrationDate: string;
 };
+
+export type ForgotPasswordFormProps = {
+  email: string;
+};
