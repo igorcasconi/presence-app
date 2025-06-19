@@ -46,6 +46,9 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
       isTeacher: userDatabase?.isTeacher!,
       name: userDatabase?.name!,
       uid,
+      ...(!!userDatabase?.registrationDate && {
+        registrationDate: userDatabase?.registrationDate,
+      }),
     });
   };
 

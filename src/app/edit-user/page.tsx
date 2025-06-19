@@ -30,6 +30,7 @@ const EditUserView = () => {
   const handleEditUser = async (values: Pick<UserProps, "name">) => {
     try {
       setUserData({ ...userData, name: values.name } as UserProps);
+
       await updateUser(userData?.uid!, {
         ...userData,
         name: values.name,

@@ -26,6 +26,7 @@ const Header = ({ children }: PropsWithChildren) => {
     if (pathname.includes("/admin")) return "Painel Professor";
     else {
       if (pathname.includes("workout")) return "Treinos";
+      if (pathname.includes("/edit-user")) return "Usuário";
       else return "Aulas da semana";
     }
   };
