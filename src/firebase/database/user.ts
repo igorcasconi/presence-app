@@ -63,7 +63,6 @@ export const getUserList = async (startKey: string | null, limit: number) => {
 };
 
 export const updateUser = async (uid: string, user: UserProps) => {
-  console.log(user.registrationDate, "<<<");
   try {
     set(ref(database, "users/" + uid), {
       isActive: user.isActive,
@@ -71,7 +70,9 @@ export const updateUser = async (uid: string, user: UserProps) => {
       isAdmin: user.isAdmin,
       isStudent: user.isStudent,
       name: user.name,
-      registrationDate: user.registrationDate,
+      ...(!!user.registrationDate && {
+        registrationDate: user.registrationDate,
+      }),
     });
   } catch (error) {
     console.log("error", error);

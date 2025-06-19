@@ -8,7 +8,7 @@ import { ArrowBackIcon, MenuIcon } from "../icons";
 import { Menu } from "../Menu";
 import { logout } from "@/firebase/auth/signin";
 
-const notShowHeader = ["/login", "/sign-up"];
+const notShowHeader = ["/login", "/sign-up", "/forgot-password"];
 const Header = ({ children }: PropsWithChildren) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -26,6 +26,7 @@ const Header = ({ children }: PropsWithChildren) => {
     if (pathname.includes("/admin")) return "Painel Professor";
     else {
       if (pathname.includes("workout")) return "Treinos";
+      if (pathname.includes("/edit-user")) return "Usuário";
       else return "Aulas da semana";
     }
   };
