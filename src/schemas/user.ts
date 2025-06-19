@@ -2,8 +2,11 @@ import { z } from "zod";
 
 export const signUpSchema = z
   .object({
-    name: z.string(),
-    email: z.string().email(),
+    name: z.string().min(1, { message: "Necessário preencher este campo!" }),
+    lastname: z
+      .string()
+      .min(1, { message: "Necessário preencher este campo!" }),
+    email: z.string().email({ message: "e-mail inválido" }),
     password: z
       .string()
       .min(8, { message: "A senha deve conter 8 caracteres" }),
