@@ -74,7 +74,17 @@ const Header = ({ children }: PropsWithChildren) => {
           />
         </>
       )}
-      <div className={`${isMenuOpen && `opacity-30`}`}>{children}</div>
+      <div className={`${isMenuOpen && `opacity-30`}`}>
+        {children}
+
+        <div className="flex fixed bottom-0 left-0 w-full p-1 items-center justify-center bg-zinc-900">
+          <a href="https://igorcasconi.github.io/portfolio-igor-casconi/">
+            <p className="text-[10px] text-blue-700">
+              Desenvolvido por Igor Casconi
+            </p>
+          </a>
+        </div>
+      </div>
     </div>
   );
 };

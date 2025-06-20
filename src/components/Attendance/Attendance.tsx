@@ -148,7 +148,7 @@ const Attendance = () => {
             <Loader />
           </div>
         ) : (
-          <div className="w-full mb-10">
+          <div className="w-full mb-[150px]">
             {!!singleLessonAttendanceData?.length && (
               <Accordion title="Aulas avulsas" startOpen={true}>
                 {singleLessonAttendanceData?.map((attendance, index) => (
