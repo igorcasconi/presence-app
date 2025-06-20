@@ -65,7 +65,7 @@ const ForgotPasswordView = () => {
             entrada e clique no link para conseguir alterar sua senha!
           </p>
           <p className="text-white text-center font-semibold mt-4 text-[18px]">
-            O e-mail possui destinatário{" "}
+            O e-mail possui o remetente{" "}
             <span className="text-terciary">
               noreply@{process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN}
             </span>
