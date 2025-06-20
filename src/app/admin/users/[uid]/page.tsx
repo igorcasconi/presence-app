@@ -3,10 +3,10 @@
 import { Button, Input, Loader, Modal, ModalAlert, Switch } from "@/components";
 import { useAuth } from "@/contexts/AuthContext";
 import { getUserData, updateUser } from "@/firebase/database/user";
+import { validateRegistrationDate } from "@/helpers/date";
 import { userRegistrationDateSchema } from "@/schemas/user";
 import { UserProps, UserRegistrationDateProps } from "@/shared/types/user";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { differenceInDays } from "date-fns";
 import { format } from "date-fns/format";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -42,22 +42,11 @@ const UserDetails = () => {
       const userDatabase = await getUserData(params.uid);
       setUserDetailData(userDatabase);
 
-      if (!!userDatabase?.registrationDate) {
-        const monthlyFeeDay = Number(
-          format(userDatabase?.registrationDate!, "dd")
-        );
-        const monthlyFeeDate = new Date(
-          new Date().getFullYear(),
-          new Date().getMonth(),
-          monthlyFeeDay
-        );
-
-        const isDateGreaterThanMonthlyFee = differenceInDays(
-          new Date(),
-          monthlyFeeDate
-        );
-
-        if (isDateGreaterThanMonthlyFee > 1) setModalAlertVisible(true);
+      if (
+        !!userDatabase?.registrationDate &&
+        validateRegistrationDate(userDatabase?.registrationDate)
+      ) {
+        setModalAlertVisible(true);
       }
     } catch (error) {
       console.log(error);
