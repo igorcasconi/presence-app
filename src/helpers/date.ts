@@ -10,6 +10,7 @@ import {
   format,
   set,
   isToday,
+  differenceInDays,
 } from "date-fns";
 
 export enum WEEK_DAYS_PT {
@@ -76,4 +77,20 @@ export const handleSortData = (
 
 export const isOpenAccordionWeekDay = (weekDay: Date) => {
   return isToday(weekDay);
+};
+
+export const validateRegistrationDate = (date: string) => {
+  const monthlyFeeDay = Number(format(date!, "dd"));
+  const monthlyFeeDate = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth(),
+    monthlyFeeDay
+  );
+
+  const isDateGreaterThanMonthlyFee = differenceInDays(
+    new Date(),
+    monthlyFeeDate
+  );
+
+  return isDateGreaterThanMonthlyFee > 1;
 };

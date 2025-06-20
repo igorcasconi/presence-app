@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "../Button";
-import { CloseIcon } from "../icons";
 import Modal, { ModalProps } from "./Modal";
 
 interface ModalAlertProps extends ModalProps {
