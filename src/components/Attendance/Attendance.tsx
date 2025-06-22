@@ -26,6 +26,7 @@ import { Loader } from "../Loader";
 import { handleSortData, isOpenAccordionWeekDay } from "@/helpers/date";
 import { ModalAlert } from "../Modal";
 import { useAuth } from "@/contexts/AuthContext";
+import useFirebaseAuthSync from "@/hooks/useFirebaseAuthSync";
 
 const Attendance = () => {
   const [attendanceData, setAttendanceData] = useState<
@@ -39,6 +40,7 @@ const Attendance = () => {
 
   const router = useRouter();
   const { userData } = useAuth();
+  useFirebaseAuthSync();
 
   const dateForStartWeek =
     isSaturday(new Date()) || isSunday(new Date())
