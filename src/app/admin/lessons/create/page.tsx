@@ -37,7 +37,7 @@ const CreateLesson = () => {
       isSingleLesson: false,
       useUserLimit: isUserLimitOnLesson ?? false,
       isActive: true,
-      userLimit: "10",
+      userLimit: "12",
     },
     resolver: zodResolver(lessonSchema),
   });
