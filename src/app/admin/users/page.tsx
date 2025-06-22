@@ -73,7 +73,7 @@ const Users = () => {
           <Loader />
         </div>
       ) : (
-        <div className="w-full">
+        <div className="w-full mb-[150px]">
           <ul>
             {users.map((item) => (
               <li

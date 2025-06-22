@@ -98,7 +98,7 @@ const Lesson = () => {
           <Loader />
         </div>
       ) : (
-        <div className="w-full mb-8">
+        <div className="w-full mb-[150px]">
           <ul>
             {workouts.map((item) => (
               <WorkoutCard
