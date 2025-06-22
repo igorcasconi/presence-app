@@ -27,6 +27,9 @@ import { handleSortData, isOpenAccordionWeekDay } from "@/helpers/date";
 import { ModalAlert } from "../Modal";
 import { useAuth } from "@/contexts/AuthContext";
 import useFirebaseAuthSync from "@/hooks/useFirebaseAuthSync";
+import { WEEK_NAME } from "@/constants";
+
+const arrayToHideWeekDays = process.env.NEXT_PUBLIC_HIDE_WEEKDAYS!.split(",");
 
 const Attendance = () => {
   const [attendanceData, setAttendanceData] = useState<
@@ -53,7 +56,7 @@ const Attendance = () => {
   const week = eachDayOfInterval({
     start: initialDayWeek,
     end: endDayWeek,
-  });
+  }).slice(0, 5);
 
   const getAttendanceByDate = (day: Date) => {
     const days = attendanceData?.filter((weekDay) =>
@@ -162,66 +165,25 @@ const Attendance = () => {
                 ))}
               </Accordion>
             )}
-            <Accordion
-              title={`Segunda-feira ${format(week[0], "dd/MM")}`}
-              startOpen={isOpenAccordionWeekDay(week[0])}
-            >
-              {getAttendanceByDate(week[0])?.map((attendance, index) => (
-                <AttendanceListCard
+            {week.map((weekDay, index) => {
+              if (arrayToHideWeekDays.includes(String(index))) return;
+
+              return (
+                <Accordion
                   key={index}
-                  data={attendance}
-                  onClick={() => handleOpenDetails(attendance?.uid)}
-                />
-              ))}
-            </Accordion>
-            <Accordion
-              title={`Terça-feira ${format(week[1], "dd/MM")}`}
-              startOpen={isOpenAccordionWeekDay(week[1])}
-            >
-              {getAttendanceByDate(week[1])?.map((attendance, index) => (
-                <AttendanceListCard
-                  key={index}
-                  data={attendance}
-                  onClick={() => handleOpenDetails(attendance?.uid)}
-                />
-              ))}
-            </Accordion>
-            <Accordion
-              title={`Quarta-feira ${format(week[2], "dd/MM")}`}
-              startOpen={isOpenAccordionWeekDay(week[2])}
-            >
-              {getAttendanceByDate(week[2])?.map((attendance, index) => (
-                <AttendanceListCard
-                  key={index}
-                  data={attendance}
-                  onClick={() => handleOpenDetails(attendance?.uid)}
-                />
-              ))}
-            </Accordion>
-            <Accordion
-              title={`Quinta-feira ${format(week[3], "dd/MM")}`}
-              startOpen={isOpenAccordionWeekDay(week[3])}
-            >
-              {getAttendanceByDate(week[3])?.map((attendance, index) => (
-                <AttendanceListCard
-                  key={index}
-                  data={attendance}
-                  onClick={() => handleOpenDetails(attendance?.uid)}
-                />
-              ))}
-            </Accordion>
-            <Accordion
-              title={`Sexta-feira ${format(week[4], "dd/MM")}`}
-              startOpen={isOpenAccordionWeekDay(week[4])}
-            >
-              {getAttendanceByDate(week[4])?.map((attendance, index) => (
-                <AttendanceListCard
-                  key={index}
-                  data={attendance}
-                  onClick={() => handleOpenDetails(attendance?.uid)}
-                />
-              ))}
-            </Accordion>
+                  title={`${WEEK_NAME[index]} ${format(weekDay, "dd/MM")}`}
+                  startOpen={isOpenAccordionWeekDay(weekDay)}
+                >
+                  {getAttendanceByDate(weekDay)?.map((attendance, index) => (
+                    <AttendanceListCard
+                      key={index}
+                      data={attendance}
+                      onClick={() => handleOpenDetails(attendance?.uid)}
+                    />
+                  ))}
+                </Accordion>
+              );
+            })}
           </div>
         )}
       </div>
