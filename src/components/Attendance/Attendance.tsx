@@ -196,6 +196,18 @@ const Attendance = () => {
               />
             ))}
           </Accordion>
+          <Accordion
+            title={`Sábado ${format(week[5], "dd/MM")}`}
+            startOpen={isOpenAccordionWeekDay(week[4])}
+          >
+            {getAttendanceByDate(week[5])?.map((attendance, index) => (
+              <AttendanceListCard
+                key={index}
+                data={attendance}
+                onClick={() => handleOpenDetails(attendance?.uid)}
+              />
+            ))}
+          </Accordion>
         </div>
       )}
     </div>
