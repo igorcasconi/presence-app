@@ -69,7 +69,7 @@ export const createAttendanceList = async (lesson: LessonProps) => {
 
 export const setUserPresence = async (
   uid: string,
-  attendance: AttendanceProps
+  attendance: AttendanceProps,
 ) => {
   let error;
 
@@ -91,7 +91,7 @@ export const setUserPresence = async (
 
 export const changeStatusAttendanceList = async (
   uid: string,
-  attendance: AttendanceProps
+  attendance: AttendanceProps,
 ) => {
   let error;
 
@@ -145,7 +145,7 @@ export const deleteOldAttendance = async () => {
 
         const numberOfWeeks = differenceInWeeks(
           today,
-          new Date(data[key].date)
+          new Date(data[key].date),
         );
 
         if (numberOfWeeks >= MAX_WEEK_NUMBER) {
@@ -163,7 +163,7 @@ export const deleteOldAttendance = async () => {
 
 export const getAttendanceWeekList = async (
   startDayWeek: Date,
-  endDayWeek: Date
+  endDayWeek: Date,
 ) => {
   let attendancesRef = ref(database, "attendance");
 
@@ -180,7 +180,7 @@ export const getAttendanceWeekList = async (
             {
               start: startDayWeek,
               end: endDayWeek,
-            }
+            },
           );
 
           if (dateIsWithinInterval && !data[key].isSingleLesson)
@@ -237,7 +237,7 @@ export const getAttendanceData = async (attendanceId: string) => {
 };
 
 export const getThereIsLessonOnThisWeek = async (
-  lessonId: string
+  lessonId: string,
 ): Promise<boolean> => {
   const attendanceRef = ref(database, "attendance");
 
@@ -251,8 +251,10 @@ export const getThereIsLessonOnThisWeek = async (
         .find((key) => {
           const numberOfWeeks = differenceInWeeks(
             new Date(data[key].date),
-            new Date()
+            new Date(),
           );
+
+          console.log(numberOfWeeks, data[key]);
           if (isThisWeek(new Date(data[key].date)) || numberOfWeeks === 1)
             return data[key];
         });

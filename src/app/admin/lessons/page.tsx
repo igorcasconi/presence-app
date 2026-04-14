@@ -36,7 +36,6 @@ const Lesson = () => {
       const data = await getLessonList(lastKey, ITEMS_PER_PAGE);
       const modalitiesData = await getModalitySelectList();
       const teachersData = await getTeacherSelectList();
-      const today = new Date();
 
       if (data) {
         const keys = Object.keys(data);
@@ -45,7 +44,7 @@ const Lesson = () => {
           keys.forEach(async (lesson) => {
             const hasBeenLesson = await getThereIsLessonOnThisWeek(lesson!);
 
-            if ((isFriday(today) || isWeekend(today)) && !hasBeenLesson)
+            if (!hasBeenLesson)
               await updateButtonGenerateLesson(lesson!, false);
           });
           const lastItemKey = keys[keys.length - DECREASE_LIMIT_PAGE];
@@ -55,22 +54,22 @@ const Lesson = () => {
             ...keys
               .map((lesson) => {
                 const existUser = (prevLesson || [])?.findIndex(
-                  (prevLesson) => lesson === prevLesson.uid
+                  (prevLesson) => lesson === prevLesson.uid,
                 );
 
                 const modalityName = modalitiesData?.find(
-                  (modality) => modality?.uid === data[lesson]?.modality
+                  (modality) => modality?.uid === data[lesson]?.modality,
                 )?.name;
 
                 const teacherName = teachersData?.find(
-                  (teacher) => teacher?.uid === data[lesson]?.teacher
+                  (teacher) => teacher?.uid === data[lesson]?.teacher,
                 )?.name;
 
                 const translateWeekDays = data[lesson]?.weekDays?.map(
                   (week) => {
                     //@ts-ignore
                     return WEEK_DAYS_PT[week];
-                  }
+                  },
                 );
 
                 if (existUser === -1)
